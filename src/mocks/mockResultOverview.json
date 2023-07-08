@@ -1,0 +1,26 @@
+{
+  "uuid": "986ada3a-318c-4fac-9b28-d1a56d406c49",
+  "date": "2023-07-08T19:05:25+00:00",
+  "ranked": true,
+  "circuit": {
+    "uuid": "cdf62923-55e4-4f85-8061-ae2d6b4d23d0",
+    "name": "Oceanside Drive",
+    "length": 5600,
+    "laps": 3
+  },
+  "fastest_lap": {
+    "driver_uuid": "dab18085-b0d9-4823-b36c-416c5777b78d",
+    "name": "Driver A",
+    "time": 134854,
+    "lap": 2
+  },
+  "winner": {
+    "driver_uuid": "dab18085-b0d9-4823-b36c-416c5777b78d",
+    "name": "Driver A",
+    "time": 404562
+  },
+  "pole": {
+    "driver_uuid": "ba887eb2-7b4f-4ece-a9be-f15b34c8c84e",
+    "name": "Driver B"
+  }
+}

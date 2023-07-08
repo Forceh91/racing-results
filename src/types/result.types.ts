@@ -6,24 +6,43 @@ export type Result = {
   date: string; // iso string
   ranked: boolean; // whether elo was calculated (x players needed)
   circuit: Circuit;
-  fastestLap?: ResultFastestLap;
+  fastest_lap?: ResultFastestLap;
   results: ResultEntry[];
 };
 
 export type ResultFastestLap = {
-  driverUUID?: string;
+  driver_uuid?: string;
+  name?: string;
   time: number; // milliseconds
   lap: number;
 };
 
 export type ResultEntry = {
-  driverUUID: string;
+  driver_uuid: string;
   name: string;
   laps: number;
   finished: boolean;
   time: number; // milliseconds
   car?: string;
   team?: Team;
-  fastestLap: ResultFastestLap;
+  fastest_lap: ResultFastestLap;
   grid: number;
 };
+
+export type ResultOverview = {
+  uuid: string;
+  date: string; // iso string
+  ranked: boolean; // whether elo was calculated (x players needed)
+  circuit: Circuit;
+  fastest_lap?: ResultFastestLap;
+  winner: ResultWinner;
+  pole: ResultPole;
+};
+
+export type ResultWinner = {
+  driver_uuid: string;
+  name: string;
+  time: number;
+};
+
+export type ResultPole = { driver_uuid: string; name: string };
