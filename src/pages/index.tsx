@@ -15,6 +15,10 @@ export default function Home() {
       <Grid item xs={12}>
         <Typography variant="h1">{process.env.NEXT_PUBLIC_APP_NAME}</Typography>
 
+        <Typography variant="h2" sx={{ marginTop: 2 }}>
+          Latest Race Results
+        </Typography>
+
         <TableContainer sx={{ marginTop: 2 }}>
           <Table>
             <TableHead>
