@@ -1,0 +1,83 @@
+{
+  "uuid": "986ada3a-318c-4fac-9b28-d1a56d406c49",
+  "date": "2023-07-08T19:05:25+00:00",
+  "ranked": true,
+  "circuit": {
+    "uuid": "cdf62923-55e4-4f85-8061-ae2d6b4d23d0",
+    "name": "Oceanside Drive",
+    "length": 5600,
+    "laps": 3
+  },
+  "fastest_lap": {
+    "driver_uuid": "dab18085-b0d9-4823-b36c-416c5777b78d",
+    "time": 134854,
+    "lap": 2
+  },
+  "results": [
+    {
+      "driver_uuid": "dab18085-b0d9-4823-b36c-416c5777b78d",
+      "name": "Driver A",
+      "laps": 3,
+      "finished": true,
+      "time": 404562,
+      "car": "Infernus",
+      "fastest_lap": {
+        "time": 134854,
+        "lap": 2
+      },
+      "grid": 2
+    },
+    {
+      "driver_uuid": "51dfef5f-0940-4200-a5c5-fd72e75e40b7",
+      "name": "Driver C",
+      "laps": 3,
+      "finished": true,
+      "time": 406562,
+      "car": "Infernus",
+      "fastest_lap": {
+        "time": 135854,
+        "lap": 3
+      },
+      "grid": 3
+    },
+    {
+      "driver_uuid": "ba887eb2-7b4f-4ece-a9be-f15b34c8c84e",
+      "name": "Driver B",
+      "laps": 3,
+      "finished": true,
+      "time": 408562,
+      "car": "Infernus",
+      "fastest_lap": {
+        "time": 138854,
+        "lap": 2
+      },
+      "grid": 1
+    },
+    {
+      "driver_uuid": "183190ea-de6f-484e-af1e-f328c66dfb52",
+      "name": "Driver E",
+      "laps": 2,
+      "finished": false,
+      "time": 0,
+      "car": "Infernus",
+      "fastest_lap": {
+        "time": 137854,
+        "lap": 1
+      },
+      "grid": 4
+    },
+    {
+      "driver_uuid": "4fbcbba4-6ba7-418e-96f1-5b4005a596a9",
+      "name": "Driver E",
+      "laps": 3,
+      "finished": false,
+      "time": 0,
+      "car": "Infernus",
+      "fastest_lap": {
+        "time": 143854,
+        "lap": 2
+      },
+      "grid": 5
+    }
+  ]
+}
