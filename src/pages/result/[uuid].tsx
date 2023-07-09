@@ -25,7 +25,7 @@ export default function ResultPage() {
   if (!result) return <>Loading...</>;
 
   const { circuit, results, fastest_lap, date } = result ?? {};
-  const formattedRaceDate = format(parseISO(date), "PPP");
+  const formattedRaceDate = format(parseISO(date), "PPP HH:mm:ss");
   const sortedResults = sortResults(results);
   const winner = sortedResults[0];
   const fastestLapHolder = results.find((result: ResultEntry) => result.driver_uuid === fastest_lap?.driver_uuid)?.name;
@@ -70,7 +70,13 @@ export default function ResultPage() {
                 <TableBody>
                   {results.map((result: ResultEntry, ix: number) => (
                     <TableRow key={result.driver_uuid} sx={{ opacity: result.finished ? 1 : 0.6 }}>
-                      <ResultDriverEntry {...result} as={TableCell} winner={winner} pos={ix + 1}></ResultDriverEntry>
+                      <ResultDriverEntry
+                        {...result}
+                        as={TableCell}
+                        winner={winner}
+                        pos={ix + 1}
+                        fastestLapHolder={fastest_lap?.driver_uuid ?? ""}
+                      ></ResultDriverEntry>
                     </TableRow>
                   ))}
                 </TableBody>

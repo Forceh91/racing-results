@@ -9,6 +9,7 @@ type ResultOverviewEntryProps = {
   as?: React.ElementType;
   pos: number;
   winner: ResultEntry;
+  fastestLapHolder: string;
 } & ResultEntry;
 
 export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
@@ -25,6 +26,7 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
     fastest_lap,
     grid,
     winner,
+    fastestLapHolder,
   } = props ?? {};
 
   const { time: leaderTime, laps: leaderLaps } = winner;
@@ -46,7 +48,12 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
 
     return (
       <>
-        {formattedLapTime(fastest_lap.time)}
+        {fastestLapHolder === driver_uuid && (
+          <Box component="strong" sx={{ color: "magenta" }}>
+            {formattedLapTime(fastest_lap.time)}
+          </Box>
+        )}
+        {fastestLapHolder !== driver_uuid && formattedLapTime(fastest_lap.time)}
         <br />
         Lap {fastest_lap.lap}
       </>
