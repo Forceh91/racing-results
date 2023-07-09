@@ -32,12 +32,9 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
   const { time: leaderTime, laps: leaderLaps } = winner;
 
   const formattedRaceTime = (time: number, isGap: boolean = false) => {
-    if (!finished) {
-      if (!isGap) return "";
-      if (laps < leaderLaps) return `+${leaderLaps - laps}L`;
-      return "";
-    }
+    if (laps < leaderLaps && isGap) return `+${leaderLaps - laps}L`;
 
+    if (!finished) return "";
     return `${isGap ? "+" : ""}${convertMillsecondsToString(time, isGap)}`;
   };
 

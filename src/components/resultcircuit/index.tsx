@@ -48,12 +48,6 @@ export default function ResultCircuit(props: ResultCircuitProps) {
         </Box>
         <Box sx={{ marginBottom: 2 }}>
           <Typography variant="h1" sx={typographyH1Sx}>
-            First Race
-          </Typography>
-          <Typography>{formattedFirstSeen}</Typography>
-        </Box>
-        <Box sx={{ marginBottom: 2 }}>
-          <Typography variant="h1" sx={typographyH1Sx}>
             Laps
           </Typography>
           <Typography>{laps ?? "-"}</Typography>
@@ -69,6 +63,12 @@ export default function ResultCircuit(props: ResultCircuitProps) {
             Avg. Fastest Lap
           </Typography>
           <Typography>{formattedAverageLap}</Typography>
+        </Box>
+        <Box sx={{ marginBottom: 2 }}>
+          <Typography variant="h1" sx={typographyH1Sx}>
+            First Race
+          </Typography>
+          <Typography>{formattedFirstSeen}</Typography>
         </Box>
       </Grid>
     </Grid>
