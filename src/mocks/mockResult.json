@@ -58,9 +58,23 @@
       "grid": 1
     },
     {
+      "driver_uuid": "ba887eb2-7b4f-4ece-a9be-f15b34c8c84e",
+      "driver_number": 42,
+      "name": "Driver G",
+      "laps": 2,
+      "finished": false,
+      "time": 408453,
+      "car": "Infernus",
+      "fastest_lap": {
+        "time": 163230,
+        "lap": 1
+      },
+      "grid": 6
+    },
+    {
       "driver_uuid": "183190ea-de6f-484e-af1e-f328c66dfb52",
       "driver_number": 9,
-      "name": "Driver E",
+      "name": "Driver F",
       "laps": 1,
       "finished": false,
       "time": 0,

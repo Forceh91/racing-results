@@ -5,51 +5,70 @@ import Link from "@mui/material/Link";
 import { format, parseISO } from "date-fns";
 import { Circuit, ResultFastestLap } from "types";
 import { convertMillsecondsToString } from "lib/time";
+import { SxProps } from "@mui/material";
 
 type ResultCircuitProps = {
-  fastest_lap: ResultFastestLap;
+  fastestLap: ResultFastestLap;
+  averageFastestLap: number;
 } & Circuit;
 
+const typographyH1Sx: SxProps = { fontSize: "2rem", fontWeight: 700, marginBottom: 1 };
+
 export default function ResultCircuit(props: ResultCircuitProps) {
-  const { uuid, name, length, first_seen, laps, fastest_lap } = props ?? {};
+  const { uuid, name, length, first_seen, laps, fastestLap, averageFastestLap } = props ?? {};
   const distanceInKM = length ? `${(length / 1000).toFixed(2)}km` : "-";
   const formattedFirstSeen = first_seen ? format(parseISO(first_seen), "PPP") : "-";
-  const formattedFastestLap = fastest_lap?.time ? (
+  const formattedFastestLap = fastestLap?.time ? (
     <>
-      {fastest_lap.name}
+      {convertMillsecondsToString(fastestLap.time)}
       <br />
-      {convertMillsecondsToString(fastest_lap.time)}
-      <br />
-      Lap {fastest_lap.lap}
+      Lap {fastestLap.lap}, {fastestLap.name}
     </>
   ) : (
     "-"
   );
+  const formattedAverageLap = averageFastestLap ? convertMillsecondsToString(averageFastestLap) : "-";
 
   return (
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
         <Box sx={{ marginBottom: 2 }}>
-          <Typography variant="h1">Circuit</Typography>
+          <Typography variant="h1" sx={typographyH1Sx}>
+            Circuit
+          </Typography>
           <Typography>
             <Link href={`/circuit/${uuid}/`}>{name ?? "-"}</Link>
           </Typography>
         </Box>
         <Box sx={{ marginBottom: 2 }}>
-          <Typography variant="h1">Distance</Typography>
+          <Typography variant="h1" sx={typographyH1Sx}>
+            Distance
+          </Typography>
           <Typography>{distanceInKM}</Typography>
         </Box>
         <Box sx={{ marginBottom: 2 }}>
-          <Typography variant="h1">First Race</Typography>
+          <Typography variant="h1" sx={typographyH1Sx}>
+            First Race
+          </Typography>
           <Typography>{formattedFirstSeen}</Typography>
         </Box>
-        <Box>
-          <Typography variant="h1">Laps</Typography>
+        <Box sx={{ marginBottom: 2 }}>
+          <Typography variant="h1" sx={typographyH1Sx}>
+            Laps
+          </Typography>
           <Typography>{laps ?? "-"}</Typography>
         </Box>
-        <Box>
-          <Typography variant="h1">Fastest Lap</Typography>
+        <Box sx={{ marginBottom: 2 }}>
+          <Typography variant="h1" sx={typographyH1Sx}>
+            Fastest Lap
+          </Typography>
           <Typography>{formattedFastestLap}</Typography>
+        </Box>
+        <Box sx={{ marginBottom: 2 }}>
+          <Typography variant="h1" sx={typographyH1Sx}>
+            Avg. Fastest Lap
+          </Typography>
+          <Typography>{formattedAverageLap}</Typography>
         </Box>
       </Grid>
     </Grid>
