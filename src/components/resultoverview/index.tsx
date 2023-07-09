@@ -1,3 +1,4 @@
+import { Link } from "@mui/material";
 import Box from "@mui/material/Box";
 import { format, parseISO } from "date-fns";
 import { convertMillsecondsToString } from "lib/time";
@@ -8,7 +9,7 @@ type ResultOverviewEntryProps = {
 } & ResultOverview;
 
 export default function ResultOverviewEntry(props: ResultOverviewEntryProps) {
-  const { as: Component = Box, date, circuit, winner, fastest_lap, pole, ranked } = props ?? {};
+  const { as: Component = Box, date, circuit, winner, fastest_lap, pole, ranked, uuid } = props ?? {};
 
   const formattedDate = (date: string) => {
     return format(parseISO(date), "yyyy-MM-dd HH:mm:ss");
@@ -31,6 +32,9 @@ export default function ResultOverviewEntry(props: ResultOverviewEntryProps) {
       </Component>
       <Component>{pole.name}</Component>
       <Component>{ranked ? "Yes" : "No"}</Component>
+      <Component>
+        <Link href={`/result/${uuid}/`}>View Results</Link>
+      </Component>
     </>
   );
 }

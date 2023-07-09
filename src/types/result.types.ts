@@ -19,6 +19,7 @@ export type ResultFastestLap = {
 
 export type ResultEntry = {
   driver_uuid: string;
+  driver_number: number;
   name: string;
   laps: number;
   finished: boolean;

@@ -30,6 +30,7 @@ export default function Home() {
                 <TableCell>Fastest Lap</TableCell>
                 <TableCell>Pole Position</TableCell>
                 <TableCell>Ranked</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

@@ -17,7 +17,7 @@ function createDurationPyramidFromMilliseconds(milliseconds: number) {
   return msObject;
 }
 
-export function convertMillsecondsToString(milliseconds: number) {
+export function convertMillsecondsToString(milliseconds: number, isShort: boolean = false) {
   const pyramid: TimePyramid = createDurationPyramidFromMilliseconds(milliseconds);
   if (!pyramid) return "";
 
@@ -31,5 +31,14 @@ export function convertMillsecondsToString(milliseconds: number) {
     }.${millisecondsString}`;
   }
 
-  return `${minutes > 9 ? minutes : "0" + minutes}:${seconds > 9 ? seconds : "0" + seconds}.${millisecondsString}`;
+  let formattedTimeString = "";
+  if (minutes > 0 && !isShort) {
+    formattedTimeString += `${minutes > 9 ? minutes : "0" + minutes}:`;
+  }
+
+  if (seconds >= 0) {
+    formattedTimeString += isShort ? `${seconds}` : seconds.toString().padStart(2, "0");
+  }
+
+  return `${formattedTimeString}.${millisecondsString}`;
 }
