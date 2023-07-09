@@ -18,5 +18,3 @@ export function sortResults(results: ResultEntry[]) {
     return aTime - bTime;
   });
 }
-
-export const numericColumn: SxProps = { textAlign: "right" };

@@ -6,6 +6,7 @@ import { format, parseISO } from "date-fns";
 import { Circuit, ResultFastestLap } from "types";
 import { convertMillsecondsToString } from "lib/time";
 import { SxProps } from "@mui/material";
+import { convertLengthToKM } from "lib/circuit";
 
 type ResultCircuitProps = {
   fastestLap: ResultFastestLap;
@@ -16,7 +17,7 @@ const typographyH1Sx: SxProps = { fontSize: "2rem", fontWeight: 700, marginBotto
 
 export default function ResultCircuit(props: ResultCircuitProps) {
   const { uuid, name, length, first_seen, laps, fastestLap, averageFastestLap } = props ?? {};
-  const distanceInKM = length ? `${(length / 1000).toFixed(2)}km` : "-";
+  const distanceInKM = length ? `${convertLengthToKM(length)}km` : "-";
   const formattedFirstSeen = first_seen ? format(parseISO(first_seen), "PPP") : "-";
   const formattedFastestLap = fastestLap?.time ? (
     <>

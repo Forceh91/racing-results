@@ -5,3 +5,13 @@ export type Circuit = {
   length?: number; // metres
   laps?: number;
 };
+
+export type CircuitStats = {
+  races: CircuitResult[];
+} & Circuit;
+
+export type CircuitResult = {
+  date: string;
+  uuid: string;
+  laps: number;
+};

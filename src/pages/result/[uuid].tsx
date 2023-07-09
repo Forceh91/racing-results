@@ -11,8 +11,9 @@ import ResultCircuit from "components/resultcircuit";
 import mockResult from "mocks/mockResult.json";
 import { useEffect, useState } from "react";
 import ResultDriverEntry from "components/resultdriverentry";
-import { numericColumn, sortResults } from "lib/results";
+import { sortResults } from "lib/results";
 import { format, parseISO } from "date-fns";
+import { numericColumn } from "lib/table";
 
 type ResultPageProps = {};
 

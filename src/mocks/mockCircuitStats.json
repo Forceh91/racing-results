@@ -1,0 +1,13 @@
+{
+  "uuid": "cdf62923-55e4-4f85-8061-ae2d6b4d23d0",
+  "name": "Oceanside Drive",
+  "first_seen": "2023-07-08T19:04:17+00:00",
+  "length": 5600,
+  "races": [
+    {
+      "date": "2023-07-08T19:04:17+00:00",
+      "uuid": "986ada3a-318c-4fac-9b28-d1a56d406c49",
+      "laps": 3
+    }
+  ]
+}
