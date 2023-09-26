@@ -1,7 +1,5 @@
-import { Link } from "@mui/material";
 import Box from "@mui/material/Box";
-import { format, parseISO } from "date-fns";
-import { numericColumn } from "lib/results";
+import { numericColumn } from "lib/table";
 import { convertMillsecondsToString } from "lib/time";
 import { ResultEntry } from "types";
 
