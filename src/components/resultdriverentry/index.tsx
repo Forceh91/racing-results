@@ -30,7 +30,7 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
   const { time: leaderTime, laps: leaderLaps } = winner;
 
   const formattedRaceTime = (time: number, isGap: boolean = false) => {
-    if (laps < leaderLaps && isGap) return `+${leaderLaps - laps}L`;
+    if (laps && leaderLaps && laps < leaderLaps && isGap) return `+${leaderLaps - laps}L`;
 
     if (!finished) return "";
     return `${isGap ? "+" : ""}${convertMillsecondsToString(time, isGap)}`;
@@ -61,11 +61,11 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
       <Component sx={{ textAlign: "center" }}>{driver_number}</Component>
       <Component>{name}</Component>
       <Component>{car}</Component>
-      <Component sx={numericColumn}>{laps}</Component>
+      <Component sx={numericColumn}>{laps ?? "-"}</Component>
       <Component sx={numericColumn}>{formattedRaceTime(time)}</Component>
       <Component sx={numericColumn}>{formattedRaceTime(time - leaderTime, true)}</Component>
       <Component sx={numericColumn}>{formattedFastestLap()}</Component>
-      <Component sx={numericColumn}>{grid}</Component>
+      <Component sx={numericColumn}>{grid ?? "-"}</Component>
     </>
   );
 }

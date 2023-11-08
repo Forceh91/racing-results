@@ -9,8 +9,8 @@ import { SxProps } from "@mui/material";
 import { convertLengthToKM } from "lib/circuit";
 
 type ResultCircuitProps = {
-  fastestLap: ResultFastestLap;
-  averageFastestLap: number;
+  fastestLap?: ResultFastestLap;
+  averageFastestLap?: number;
 } & Circuit;
 
 const typographyH1Sx: SxProps = { fontSize: "2rem", fontWeight: 700, marginBottom: 1 };

@@ -24,13 +24,11 @@ export default function ResultOverviewEntry(props: ResultOverviewEntryProps) {
       <Component>{formattedDate(date)}</Component>
       <Component>{circuit.name}</Component>
       <Component>{circuit.laps}</Component>
-      <Component>
-        {winner.name} - {formattedTime(winner.time)}
-      </Component>
+      <Component>{winner ? `${winner.name} - ${formattedTime(winner.time)}` : "-"}</Component>
       <Component>
         {fastest_lap ? `${fastest_lap.name} - ${formattedTime(fastest_lap.time)} (Lap ${fastest_lap.lap})` : "-"}
       </Component>
-      <Component>{pole.name}</Component>
+      <Component>{pole ? pole.name : "-"}</Component>
       <Component>{ranked ? "Yes" : "No"}</Component>
       <Component>
         <Link href={`/result/${uuid}/`}>View Results</Link>

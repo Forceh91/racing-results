@@ -1,0 +1,46 @@
+{
+  "uuid": "287ee3e8-dc8d-436b-9db2-cf82f991e067",
+  "date": "2023-11-07T22:00:00+00:00",
+  "type": "RALLY",
+  "ranked": true,
+  "circuit": {
+    "uuid": "957080a8-3ed8-4de3-b36f-efc083a266d3",
+    "name": "01 - Te Awanga Forward, New Zealand",
+    "first_seen": "2023-11-06T12:00:00+00:00",
+    "length": 11480
+  },
+  "results": [
+    {
+      "driver_uuid": "3b10dfc6-9dbb-47a8-a993-66163c15aa16",
+      "driver_number": 2,
+      "name": "AdTec_224",
+      "finished": true,
+      "time": 554113,
+      "car": "Lancia Fulvia HF"
+    },
+    {
+      "driver_uuid": "6d43f6d3-a8e4-44a1-b371-b5f2459c0c0a",
+      "driver_number": 1,
+      "name": "Force",
+      "finished": true,
+      "time": 786573,
+      "car": "Lancia Fulvia HF"
+    },
+    {
+      "driver_uuid": "914edad7-24e8-44b3-833c-72aea2c11ada",
+      "driver_number": 3,
+      "name": "Juppi",
+      "finished": true,
+      "time": 559792,
+      "car": "MINI Cooper S"
+    },
+    {
+      "driver_uuid": "1486d1ae-99b1-4762-a423-eee5ce37d889",
+      "driver_number": 4,
+      "name": "VRocker",
+      "finished": true,
+      "time": 624486,
+      "car": "MINI Cooper S"
+    }
+  ]
+}

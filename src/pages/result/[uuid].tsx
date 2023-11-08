@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Result, ResultEntry, ResultFastestLap } from "types";
 import ResultCircuit from "components/resultcircuit";
-import mockResult from "mocks/mockResult.json";
+import mockResult from "mocks/projectApolloRally/newZealand/mockResult.json";
 import { useEffect, useState } from "react";
 import ResultDriverEntry from "components/resultdriverentry";
 import { sortResults } from "lib/results";
@@ -29,12 +29,15 @@ export default function ResultPage() {
   const formattedRaceDate = format(parseISO(date), "PPP HH:mm:ss");
   const sortedResults = sortResults(results);
   const winner = sortedResults[0];
-  const fastestLapHolder = results.find((result: ResultEntry) => result.driver_uuid === fastest_lap?.driver_uuid)?.name;
+  const fastestLapHolder = results.find((result) => result.driver_uuid === fastest_lap?.driver_uuid)?.name;
+  const resultsWithFastestLap = results.filter((result) => result.fastest_lap);
   const averageFastestLapTime =
-    results
-      .map((result: ResultEntry) => result.fastest_lap)
-      .reduce((previousSum: number, currentFastestLap: ResultFastestLap) => previousSum + currentFastestLap.time, 0) /
-    results.length;
+    mockResult.type === "CIRCUIT"
+      ? resultsWithFastestLap.reduce(
+          (previousSum, currentResult) => previousSum + (currentResult.fastest_lap?.time ?? 0),
+          0
+        ) / resultsWithFastestLap.length
+      : undefined;
 
   return (
     <Grid container rowSpacing={3}>

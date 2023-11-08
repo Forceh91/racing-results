@@ -6,7 +6,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import mockResultOverview from "mocks/mockResultOverview.json";
+import mockResultOverview from "mocks/projectApolloRally/newZealand/mockResultOverview.json";
 import ResultOverviewEntry from "components/resultoverview";
 
 export default function Home() {
@@ -35,7 +35,10 @@ export default function Home() {
             </TableHead>
             <TableBody>
               <TableRow>
-                <ResultOverviewEntry {...mockResultOverview} as={TableCell}></ResultOverviewEntry>
+                {mockResultOverview.length &&
+                  mockResultOverview.map((mockResult) => (
+                    <ResultOverviewEntry key={mockResult.uuid} {...mockResult} as={TableCell} />
+                  ))}
               </TableRow>
             </TableBody>
           </Table>

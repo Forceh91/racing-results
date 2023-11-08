@@ -1,0 +1,17 @@
+[
+  {
+    "uuid": "287ee3e8-dc8d-436b-9db2-cf82f991e067",
+    "date": "2023-11-07T22:00:00+00:00",
+    "ranked": true,
+    "circuit": {
+      "uuid": "957080a8-3ed8-4de3-b36f-efc083a266d3",
+      "name": "Te Awanga Forward",
+      "length": 11480
+    },
+    "winner": {
+      "driver_uuid": "dab18085-b0d9-4823-b36c-416c5777b78d",
+      "name": "Driver A",
+      "time": 404562
+    }
+  }
+]

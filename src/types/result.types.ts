@@ -8,7 +8,13 @@ export type Result = {
   circuit: Circuit;
   fastest_lap?: ResultFastestLap;
   results: ResultEntry[];
+  type: ResultType;
 };
+
+export enum ResultType {
+  CIRCUIT = "CIRCUIT",
+  RALLY = "RALLY",
+}
 
 export type ResultFastestLap = {
   driver_uuid?: string;
@@ -21,13 +27,13 @@ export type ResultEntry = {
   driver_uuid: string;
   driver_number: number;
   name: string;
-  laps: number;
+  laps?: number;
   finished: boolean;
   time: number; // milliseconds
   car?: string;
   team?: Team;
-  fastest_lap: ResultFastestLap;
-  grid: number;
+  fastest_lap?: ResultFastestLap;
+  grid?: number;
 };
 
 export type ResultOverview = {
@@ -36,8 +42,8 @@ export type ResultOverview = {
   ranked: boolean; // whether elo was calculated (x players needed)
   circuit: Circuit;
   fastest_lap?: ResultFastestLap;
-  winner: ResultWinner;
-  pole: ResultPole;
+  winner?: ResultWinner;
+  pole?: ResultPole;
 };
 
 export type ResultWinner = {
