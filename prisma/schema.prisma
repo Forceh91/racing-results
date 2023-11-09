@@ -61,8 +61,8 @@ model EventResult {
   circuit_uuid        String
   circuit             Circuit       @relation(fields: [circuit_uuid], references: [uuid])
   // fastest lap
-  fastest_lap_uuid    String        @unique
-  fastest_lap         FastestLap    @relation(fields: [fastest_lap_uuid], references: [uuid])
+  fastest_lap_uuid    String?       @unique
+  fastest_lap         FastestLap?   @relation(fields: [fastest_lap_uuid], references: [uuid])
   // results in no order
   results             ResultEntry[]
 }
@@ -96,7 +96,7 @@ model ResultEntry {
   driver_uuid       String
   driver            Driver       @relation(fields: [driver_uuid], references: [uuid])
   // if they finished
-  finished          Boolean
+  finished          Boolean      @default(true)
   // completed laps
   laps              Int?
   // total time to complete event
