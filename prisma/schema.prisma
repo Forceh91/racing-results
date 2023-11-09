@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource racingresults {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Driver {
+  id           Int           @id @default(autoincrement())
+  uuid         String        @unique @default(uuid())
+  name         String
+  created      DateTime      @default(now())
+  fastest_laps FastestLap[]
+  results      ResultEntry[]
+}
+
+model Team {
+  id      Int           @id @default(autoincrement())
+  uuid    String        @unique @default(uuid())
+  name    String
+  created DateTime
+  results ResultEntry[]
+}
+
+model Event {
+  id         Int           @id @default(autoincrement())
+  uuid       String        @unique @default(uuid())
+  name       String
+  start_date DateTime      @default(now())
+  end_date   DateTime?
+  results    EventResult[]
+}
+
+model Circuit {
+  id           Int           @id @default(autoincrement())
+  uuid         String        @unique @default(uuid())
+  name         String
+  length       Int
+  first_event  DateTime      @default(now())
+  results      EventResult[]
+  fastest_laps FastestLap[]
+}
+
+model EventResult {
+  id               Int           @id @default(autoincrement())
+  uuid             String        @unique @default(uuid())
+  ranked           Boolean
+  type             EventType
+  // event
+  event_uuid       String
+  event            Event         @relation(fields: [event_uuid], references: [uuid])
+  // circuit
+  circuit_uuid     String
+  circuit          Circuit       @relation(fields: [circuit_uuid], references: [uuid])
+  // fastest lap
+  fastest_lap_uuid String        @unique
+  fastest_lap      FastestLap    @relation(fields: [fastest_lap_uuid], references: [uuid])
+  // results in no order
+  results          ResultEntry[]
+}
+
+model FastestLap {
+  // id of this result
+  id                Int          @id @default(autoincrement())
+  uuid              String       @unique @default(uuid())
+  // driver info
+  driver_uuid       String
+  driver            Driver       @relation(fields: [driver_uuid], references: [uuid])
+  // event info
+  event_result_uuid String?
+  event_result      EventResult?
+  // circuit info
+  circuit_uuid      String
+  circuit           Circuit      @relation(fields: [circuit_uuid], references: [uuid])
+  // fastest lap data
+  time              Int
+  lap               Int?
+  // if it was an individual result rather than event result
+  result_entry_uuid String?      @unique
+  result_entry      ResultEntry?
+}
+
+model ResultEntry {
+  // result ids
+  id               Int          @id @default(autoincrement())
+  uuid             String       @unique @default(uuid())
+  // driver info
+  driver_uuid      String
+  driver           Driver       @relation(fields: [driver_uuid], references: [uuid])
+  // if they finished
+  finished         Boolean
+  // completed laps
+  laps             Int?
+  // total time to complete event
+  time             Int
+  // car name
+  car              String?
+  // starting position
+  grid             Int?
+  // which event result this is part of
+  event_uuid       String?
+  event_result     EventResult? @relation(fields: [event_uuid], references: [uuid])
+  // there fastest lap
+  fastest_lap      FastestLap?  @relation(fields: [fastest_lap_uuid], references: [uuid])
+  fastest_lap_uuid String?      @unique
+  // what team they were with
+  team_uuid        String?
+  team             Team?        @relation(fields: [team_uuid], references: [uuid])
+}
+
+enum EventType {
+  CIRCUIT
+  RALLY
+}
