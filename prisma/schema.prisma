@@ -8,29 +8,32 @@ datasource racingresults {
 }
 
 model Driver {
-  id           Int           @id @default(autoincrement())
-  uuid         String        @unique @default(uuid())
-  name         String
-  created      DateTime      @default(now())
-  fastest_laps FastestLap[]
-  results      ResultEntry[]
+  id                 Int                    @id @default(autoincrement())
+  uuid               String                 @unique @default(uuid())
+  name               String
+  created            DateTime               @default(now())
+  fastest_laps       FastestLap[]
+  results            ResultEntry[]
+  aggregated_results AggreatedResultEntry[]
 }
 
 model Team {
-  id      Int           @id @default(autoincrement())
-  uuid    String        @unique @default(uuid())
-  name    String
-  created DateTime
-  results ResultEntry[]
+  id                 Int                    @id @default(autoincrement())
+  uuid               String                 @unique @default(uuid())
+  name               String
+  created            DateTime
+  results            ResultEntry[]
+  aggregated_results AggreatedResultEntry[]
 }
 
 model Event {
-  id         Int           @id @default(autoincrement())
-  uuid       String        @unique @default(uuid())
-  name       String
-  start_date DateTime      @default(now())
-  end_date   DateTime?
-  results    EventResult[]
+  id                 Int                    @id @default(autoincrement())
+  uuid               String                 @unique @default(uuid())
+  name               String
+  start_date         DateTime               @default(now())
+  end_date           DateTime?
+  results            EventResult[]
+  aggregated_results AggreatedResultEntry[]
 }
 
 model Circuit {
@@ -44,21 +47,24 @@ model Circuit {
 }
 
 model EventResult {
-  id               Int           @id @default(autoincrement())
-  uuid             String        @unique @default(uuid())
-  ranked           Boolean
-  type             EventType
+  id                  Int           @id @default(autoincrement())
+  uuid                String        @unique @default(uuid())
+  // used to order results within an event. e.g. race 1, race 2, stage 1, stage 2, etc.
+  event_result_number Int           @default(1)
+  // misc info about the result
+  ranked              Boolean
+  type                EventType
   // event
-  event_uuid       String
-  event            Event         @relation(fields: [event_uuid], references: [uuid])
+  event_uuid          String
+  event               Event         @relation(fields: [event_uuid], references: [uuid])
   // circuit
-  circuit_uuid     String
-  circuit          Circuit       @relation(fields: [circuit_uuid], references: [uuid])
+  circuit_uuid        String
+  circuit             Circuit       @relation(fields: [circuit_uuid], references: [uuid])
   // fastest lap
-  fastest_lap_uuid String        @unique
-  fastest_lap      FastestLap    @relation(fields: [fastest_lap_uuid], references: [uuid])
+  fastest_lap_uuid    String        @unique
+  fastest_lap         FastestLap    @relation(fields: [fastest_lap_uuid], references: [uuid])
   // results in no order
-  results          ResultEntry[]
+  results             ResultEntry[]
 }
 
 model FastestLap {
@@ -84,30 +90,53 @@ model FastestLap {
 
 model ResultEntry {
   // result ids
-  id               Int          @id @default(autoincrement())
-  uuid             String       @unique @default(uuid())
+  id                Int          @id @default(autoincrement())
+  uuid              String       @unique @default(uuid())
   // driver info
-  driver_uuid      String
-  driver           Driver       @relation(fields: [driver_uuid], references: [uuid])
+  driver_uuid       String
+  driver            Driver       @relation(fields: [driver_uuid], references: [uuid])
   // if they finished
-  finished         Boolean
+  finished          Boolean
   // completed laps
-  laps             Int?
+  laps              Int?
   // total time to complete event
-  time             Int
+  time              Int
   // car name
-  car              String?
+  car               String?
   // starting position
-  grid             Int?
+  grid              Int?
   // which event result this is part of
-  event_uuid       String?
-  event_result     EventResult? @relation(fields: [event_uuid], references: [uuid])
-  // there fastest lap
-  fastest_lap      FastestLap?  @relation(fields: [fastest_lap_uuid], references: [uuid])
-  fastest_lap_uuid String?      @unique
+  event_result_uuid String?
+  event_result      EventResult? @relation(fields: [event_result_uuid], references: [uuid])
+  // their fastest lap
+  fastest_lap       FastestLap?  @relation(fields: [fastest_lap_uuid], references: [uuid])
+  fastest_lap_uuid  String?      @unique
   // what team they were with
-  team_uuid        String?
-  team             Team?        @relation(fields: [team_uuid], references: [uuid])
+  team_uuid         String?
+  team              Team?        @relation(fields: [team_uuid], references: [uuid])
+}
+
+// used more for a rally than a normal racing event - sum of all times up to that event_result_num
+model AggreatedResultEntry {
+  // result ids
+  id Int @id @default(autoincrement())
+
+  // driver info
+  driver_uuid         String
+  driver              Driver  @relation(fields: [driver_uuid], references: [uuid])
+  // total time to complete event
+  time                Int
+  // car name
+  car                 String?
+  // which event this is part of
+  event_uuid          String?
+  event               Event?  @relation(fields: [event_uuid], references: [uuid])
+  // aggregated result _after_ this event_result_number, e.g. aggregated result after race 1
+  event_result_number Int
+
+  // what team they were with
+  team_uuid String?
+  team      Team?   @relation(fields: [team_uuid], references: [uuid])
 }
 
 enum EventType {
