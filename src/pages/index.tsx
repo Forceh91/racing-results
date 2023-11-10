@@ -6,43 +6,62 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import mockResultOverview from "mocks/projectApolloRally/newZealand/mockResultOverview.json";
-import ResultOverviewEntry from "components/resultoverview";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import { useEventsOverview } from "hooks/useEventsOverview";
+import { format, parseISO } from "date-fns";
+import { DEFAULT_DATE_FORMAT } from "../../consts";
+import Link from "next/link";
 
 export default function Home() {
+  const { data, error, isLoading, isSuccess } = useEventsOverview();
+
   return (
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
-        <Typography variant="h1">{process.env.NEXT_PUBLIC_APP_NAME}</Typography>
+        <Box sx={{ my: 1 }}>
+          <Typography variant="h1">{process.env.NEXT_PUBLIC_APP_NAME}</Typography>
 
-        <Typography variant="h2" sx={{ marginTop: 2 }}>
-          Latest Race Results
-        </Typography>
+          <Typography variant="h2" sx={{ marginTop: 2 }}>
+            Latest Events
+          </Typography>
+        </Box>
 
-        <TableContainer sx={{ marginTop: 2 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Date/Time</TableCell>
-                <TableCell>Circuit</TableCell>
-                <TableCell>Laps</TableCell>
-                <TableCell>Winner</TableCell>
-                <TableCell>Fastest Lap</TableCell>
-                <TableCell>Pole Position</TableCell>
-                <TableCell>Ranked</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                {mockResultOverview.length &&
-                  mockResultOverview.map((mockResult) => (
-                    <ResultOverviewEntry key={mockResult.uuid} {...mockResult} as={TableCell} />
-                  ))}
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {isLoading && (
+          <Alert variant="filled" severity="info">
+            Fetching latest events...
+          </Alert>
+        )}
+
+        {isSuccess && (
+          <TableContainer sx={{ marginTop: 2 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Event Date</TableCell>
+                  <TableCell>Event Name</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {!data.length && (
+                  <TableRow>
+                    <TableCell colSpan={3}>There are no recent events</TableCell>
+                  </TableRow>
+                )}
+                {data.map((event) => (
+                  <TableRow key={event.uuid}>
+                    <TableCell>{format(parseISO(event.start_date), DEFAULT_DATE_FORMAT)}</TableCell>
+                    <TableCell>{event.name}</TableCell>
+                    <TableCell>
+                      {event.results?.length && <Link href={`/events/${event.uuid}/`}>View Event</Link>}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Grid>
     </Grid>
   );
