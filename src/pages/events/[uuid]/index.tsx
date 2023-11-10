@@ -5,9 +5,11 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Link from "next/link";
+import Button from "@mui/material/Button";
 import { useEvent } from "hooks/useEvents";
 import { numericColumn } from "lib/table";
 import { sortAggregatedResults } from "lib/results";
@@ -41,6 +43,7 @@ export default function EventInfo() {
     );
 
   const sortedAggregateResults = event.aggregated_results.length && sortAggregatedResults(event.aggregated_results);
+  const latestEventResult = (event.results?.length && event.results[event.event_result_number - 1]) ?? false;
 
   return (
     <Grid container rowSpacing={3}>
@@ -54,6 +57,16 @@ export default function EventInfo() {
         {/* if we've got aggregated results we should show them as priority rather than a list of results to click into */}
         {sortedAggregateResults && (
           <>
+            <Box sx={{ my: 2, display: "flex" }}>
+              {latestEventResult && (
+                <Link href={`/events/${event.uuid}/results/${latestEventResult.uuid}`}>
+                  <Button variant="contained" size="large" color="primary">
+                    <Typography>Stage Results</Typography>
+                  </Button>
+                </Link>
+              )}
+            </Box>
+
             <Box sx={{ my: 1 }}>
               <Typography variant="h3" sx={{ marginTop: 2 }}>
                 Overall Standings (After {event.event_result_number} stages)

@@ -24,14 +24,26 @@ export const getEventInfo = async (uuid: string) => {
 
   // get event info from db
   return await prisma.eventResult.findUniqueOrThrow({
-    where: { uuid: uuid },
+    where: { uuid },
     select: {
       id: false,
       uuid: true,
-      circuit: true,
       type: true,
       event_result_number: true,
-      results: { include: { driver: true } },
+      circuit: { select: { uuid: true, name: true, length: true } },
+      results: {
+        select: {
+          uuid: true,
+          driver: { select: { name: true } },
+          team: { select: { name: true } },
+          car: true,
+          finished: true,
+          grid: true,
+          laps: true,
+          time: true,
+        },
+      },
+      event: { select: { uuid: true, results: { select: { uuid: true, event_result_number: true } } } },
     },
   });
 };

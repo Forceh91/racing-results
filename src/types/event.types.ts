@@ -15,7 +15,7 @@ export type Event = {
   end_date?: string;
   results: EventResultIdentifiers;
   aggregated_results: AggregatedResultEntry[];
-  event_result_number?: number;
+  event_result_number: number;
 };
 
 export type EventResultIdentifier = {

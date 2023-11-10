@@ -33,14 +33,12 @@ export const getEventInfo = async (eventUUID: string) => {
       results: { select: { id: false, event_result_number: true, uuid: true } },
       aggregated_results: {
         select: { id: false, driver: { select: { name: true } }, car: true, time: true, event_result_number: true },
-        orderBy: { time: "asc" },
+        orderBy: [{ event_result_number: "desc" }, { time: "asc" }],
       },
     },
   });
 
-  const highestAggregateEventResultNumber = Math.max(
-    ...aggregated_results.map((aggregatedResult) => aggregatedResult.event_result_number)
-  );
+  const highestAggregateEventResultNumber = aggregated_results.length ? aggregated_results[0].event_result_number : 1;
 
   return {
     ...rest,

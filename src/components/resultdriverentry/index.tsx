@@ -7,7 +7,8 @@ type ResultOverviewEntryProps = {
   as?: React.ElementType;
   pos: number;
   winner: ResultEntry;
-  fastestLapHolder: string;
+  fastestLapHolder?: string;
+  isRally: boolean;
 } & ResultEntry;
 
 export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
@@ -15,8 +16,8 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
     as: Component = Box,
     pos,
     driver_uuid,
-    driver_number,
-    name,
+    driver: { name },
+    team,
     car,
     finished,
     laps,
@@ -25,6 +26,7 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
     grid,
     winner,
     fastestLapHolder,
+    isRally,
   } = props ?? {};
 
   const { time: leaderTime, laps: leaderLaps } = winner;
@@ -58,14 +60,21 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
   return (
     <>
       <Component sx={numericColumn}>{finished ? pos : ""}</Component>
-      <Component sx={{ textAlign: "center" }}>{driver_number}</Component>
-      <Component>{name}</Component>
-      <Component>{car}</Component>
-      <Component sx={numericColumn}>{laps ?? "-"}</Component>
+      <Component sx={{ fontWeight: 700 }}>{name}</Component>
+      <Component>
+        {car}
+        <br />
+        {team?.name ?? "-"}
+      </Component>
+      {!isRally && <Component sx={numericColumn}>{laps ?? "-"}</Component>}
       <Component sx={numericColumn}>{formattedRaceTime(time)}</Component>
       <Component sx={numericColumn}>{formattedRaceTime(time - leaderTime, true)}</Component>
-      <Component sx={numericColumn}>{formattedFastestLap()}</Component>
-      <Component sx={numericColumn}>{grid ?? "-"}</Component>
+      {!isRally && (
+        <>
+          <Component sx={numericColumn}>{formattedFastestLap()}</Component>
+          <Component sx={numericColumn}>{grid ?? "-"}</Component>
+        </>
+      )}
     </>
   );
 }

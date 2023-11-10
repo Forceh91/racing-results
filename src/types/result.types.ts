@@ -1,5 +1,6 @@
 import { Circuit } from "./circuit.types";
 import { Driver } from "./driver.types";
+import { Event } from "./event.types";
 import { Team } from "./team.types";
 
 export type Result = {
@@ -10,6 +11,8 @@ export type Result = {
   fastest_lap?: ResultFastestLap;
   results: ResultEntry[];
   type: ResultType;
+  event_result_number: number;
+  event: Partial<Event>;
 };
 
 export enum ResultType {
@@ -26,8 +29,8 @@ export type ResultFastestLap = {
 
 export type ResultEntry = {
   driver_uuid: string;
-  driver_number: number;
-  name: string;
+  driver: Driver;
+  driver_number?: number;
   laps?: number;
   finished: boolean;
   time: number; // milliseconds
