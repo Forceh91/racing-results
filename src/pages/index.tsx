@@ -27,6 +27,12 @@ export default function Home() {
           </Typography>
         </Box>
 
+        {error && (
+          <Alert variant="filled" severity="error">
+            Unable to fetch latest events...
+          </Alert>
+        )}
+
         {isLoading && (
           <Alert variant="filled" severity="info">
             Fetching latest events...

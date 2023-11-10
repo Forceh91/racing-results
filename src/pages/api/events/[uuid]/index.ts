@@ -23,18 +23,33 @@ export const getEventInfo = async (eventUUID: string) => {
   if (!!!eventUUID?.length) throw "no uuid provided";
 
   // get event info from db
-  return await prisma.event.findUniqueOrThrow({
+  const { results, aggregated_results, ...rest } = await prisma.event.findUniqueOrThrow({
     where: { uuid: eventUUID },
     select: {
-      id: false,
       uuid: true,
       name: true,
       start_date: true,
       end_date: true,
-      results: true,
-      aggregated_results: true,
+      results: { select: { id: false, event_result_number: true, uuid: true } },
+      aggregated_results: {
+        select: { id: false, driver: { select: { name: true } }, car: true, time: true, event_result_number: true },
+        orderBy: { time: "asc" },
+      },
     },
   });
+
+  const highestAggregateEventResultNumber = Math.max(
+    ...aggregated_results.map((aggregatedResult) => aggregatedResult.event_result_number)
+  );
+
+  return {
+    ...rest,
+    results,
+    aggregated_results: aggregated_results.filter(
+      (aggregatedResult) => aggregatedResult.event_result_number === highestAggregateEventResultNumber
+    ),
+    event_result_number: highestAggregateEventResultNumber,
+  };
 };
 
 export default eventsUUIDRoute;

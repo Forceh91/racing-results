@@ -34,7 +34,7 @@ export function convertMillsecondsToString(milliseconds: number, isShort: boolea
   let formattedTimeString = "";
   if (minutes > 0) formattedTimeString += isShort ? `${minutes}:` : `${minutes.toString().padStart(2, "0")}:`;
 
-  if (seconds >= 0) formattedTimeString += isShort ? `${seconds}` : seconds.toString().padStart(2, "0");
+  if (seconds >= 0) formattedTimeString += isShort && !minutes ? `${seconds}` : seconds.toString().padStart(2, "0");
 
   return `${formattedTimeString}.${millisecondsString}`;
 }
