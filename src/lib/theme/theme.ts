@@ -1,12 +1,12 @@
 import { createTheme } from "@mui/material";
 
-import { Overpass } from "@next/font/google";
+import { Roboto_Mono } from "@next/font/google";
 
-const overpass = Overpass({ subsets: ["latin"] });
+const robotoMono = Roboto_Mono({ subsets: ["latin"] });
 
 export const theme = createTheme({
   typography: {
-    fontFamily: overpass.style.fontFamily,
+    fontFamily: robotoMono.style.fontFamily,
     body1: { fontSize: "1.6rem" },
     body2: { fontSize: "1.6rem" },
     h1: { fontSize: "3.4rem" },
