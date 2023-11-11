@@ -15,6 +15,7 @@ import { numericColumn } from "lib/table";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
 import AggregatedResultDriverEntry from "components/aggregatedresultdriverentry";
+import StyledTableRow from "components/styledtablerow";
 
 export default function EventInfo() {
   const router = useRouter();
@@ -74,7 +75,7 @@ export default function EventInfo() {
             </Box>
 
             <TableContainer sx={{ marginTop: 2 }}>
-              <Table>
+              <Table stickyHeader>
                 <TableHead>
                   <TableRow>
                     <TableCell sx={numericColumn}>Pos</TableCell>
@@ -86,14 +87,14 @@ export default function EventInfo() {
                 </TableHead>
                 <TableBody>
                   {sortedAggregateResults.map((result, ix) => (
-                    <TableRow key={result.driver_uuid}>
+                    <StyledTableRow key={result.driver_uuid}>
                       <AggregatedResultDriverEntry
                         {...result}
                         as={TableCell}
                         winner={sortedAggregateResults[0]}
                         pos={ix + 1}
                       />
-                    </TableRow>
+                    </StyledTableRow>
                   ))}
                 </TableBody>
               </Table>

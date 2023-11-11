@@ -44,6 +44,9 @@ export const getResult = async (uuid: string) => {
         },
       },
       event: { select: { uuid: true, results: { select: { uuid: true, event_result_number: true } } } },
+      penalty: {
+        select: { driver: { select: { name: true, nationality: true, uuid: true } }, time: true, reason: true },
+      },
     },
   });
 

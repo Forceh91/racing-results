@@ -11,6 +11,7 @@ import ResultCircuit from "components/resultcircuit";
 import mockResult from "mocks/projectApolloRally/newZealand/mockResult.json";
 import { useEffect, useState } from "react";
 import ResultDriverEntry from "components/resultdriverentry";
+import StyledTableRow from "components/styledtablerow";
 import { sortResults } from "lib/results";
 import { format, parseISO } from "date-fns";
 import { numericColumn } from "lib/table";
@@ -57,7 +58,7 @@ export default function ResultPage() {
 
           <Grid item xs={9}>
             <TableContainer sx={{ marginTop: 2 }}>
-              <Table>
+              <Table stickyHeader>
                 <TableHead>
                   <TableRow>
                     <TableCell sx={numericColumn}>Pos</TableCell>
@@ -73,7 +74,7 @@ export default function ResultPage() {
                 </TableHead>
                 <TableBody>
                   {results.map((result: ResultEntry, ix: number) => (
-                    <TableRow key={result.driver_uuid} sx={{ opacity: result.finished ? 1 : 0.6 }}>
+                    <StyledTableRow key={result.driver_uuid} sx={{ opacity: result.finished ? 1 : 0.6 }}>
                       <ResultDriverEntry
                         {...result}
                         as={TableCell}
@@ -81,7 +82,7 @@ export default function ResultPage() {
                         pos={ix + 1}
                         fastestLapHolder={fastest_lap?.driver_uuid ?? ""}
                       ></ResultDriverEntry>
-                    </TableRow>
+                    </StyledTableRow>
                   ))}
                 </TableBody>
               </Table>

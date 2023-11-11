@@ -2,6 +2,7 @@ import { Car } from "./car.types";
 import { Circuit } from "./circuit.types";
 import { Driver } from "./driver.types";
 import { Event } from "./event.types";
+import { Penalty } from "./penalty.types";
 import { Team } from "./team.types";
 
 export type Result = {
@@ -15,6 +16,7 @@ export type Result = {
   event_result_number: number;
   event: Partial<Event>;
   aggregate_results?: AggregatedResultEntry[];
+  penalty?: Penalty[];
 };
 
 export enum ResultType {

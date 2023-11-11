@@ -3,6 +3,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
+import StyledTableRow from "../../../../components/styledtablerow";
 import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -11,7 +12,7 @@ import Box from "@mui/material/Box";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 
-import { ResultEntry, ResultType } from "types";
+import { ResultType } from "types";
 import ResultDriverEntry from "components/resultdriverentry";
 import { sortResults } from "lib/results";
 import { numericColumn } from "lib/table";
@@ -19,6 +20,7 @@ import { useRouter } from "next/router";
 import { useEventResult } from "hooks";
 import AggregatedResultDriverEntry from "components/aggregatedresultdriverentry";
 import { convertLengthToKM } from "lib/circuit";
+import PenaltyEntry from "components/penalty";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -46,7 +48,7 @@ export default function ResultPage() {
       </Grid>
     );
 
-  const { event, event_result_number, circuit, results, fastest_lap, type, aggregate_results } = result ?? {};
+  const { event, event_result_number, circuit, results, fastest_lap, type, aggregate_results, penalty } = result ?? {};
 
   const isRally = type === ResultType.RALLY;
   const sortedResults = sortResults(results);
@@ -98,7 +100,7 @@ export default function ResultPage() {
                 <Box sx={{ width: "100%" }}>
                   <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>{isRally ? "Stage" : ""} Results</Typography>
                   <TableContainer sx={{ marginTop: 2 }}>
-                    <Table>
+                    <Table stickyHeader>
                       <TableHead>
                         <TableRow>
                           <TableCell sx={numericColumn}>Pos</TableCell>
@@ -113,7 +115,7 @@ export default function ResultPage() {
                       </TableHead>
                       <TableBody>
                         {results.map((result, ix) => (
-                          <TableRow key={result.driver_uuid} sx={{ opacity: result.finished ? 1 : 0.6 }}>
+                          <StyledTableRow key={result.driver_uuid} sx={{ opacity: result.finished ? 1 : 0.6 }}>
                             <ResultDriverEntry
                               {...result}
                               as={TableCell}
@@ -121,7 +123,7 @@ export default function ResultPage() {
                               pos={ix + 1}
                               isRally={isRally}
                             ></ResultDriverEntry>
-                          </TableRow>
+                          </StyledTableRow>
                         ))}
                       </TableBody>
                     </Table>
@@ -131,26 +133,26 @@ export default function ResultPage() {
                   <Box sx={{ marginLeft: 4, width: "100%" }}>
                     <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Overall Results</Typography>
                     <TableContainer>
-                      <Table>
+                      <Table stickyHeader>
                         <TableHead>
-                          <TableRow>
+                          <StyledTableRow>
                             <TableCell sx={numericColumn}>Pos</TableCell>
                             <TableCell>Driver</TableCell>
                             <TableCell>Car/Team</TableCell>
                             <TableCell sx={numericColumn}>Time</TableCell>
                             <TableCell sx={numericColumn}>Gap</TableCell>
-                          </TableRow>
+                          </StyledTableRow>
                         </TableHead>
                         <TableBody>
                           {aggregate_results.map((result, ix) => (
-                            <TableRow key={result.driver_uuid}>
+                            <StyledTableRow key={result.driver_uuid}>
                               <AggregatedResultDriverEntry
                                 {...result}
                                 as={TableCell}
                                 winner={aggregate_results[0]}
                                 pos={ix + 1}
                               />
-                            </TableRow>
+                            </StyledTableRow>
                           ))}
                         </TableBody>
                       </Table>
@@ -159,6 +161,32 @@ export default function ResultPage() {
                 ) : (
                   <></>
                 )}
+              </Box>
+            ) : (
+              <></>
+            )}
+
+            {penalty?.length ? (
+              <Box sx={{ my: 2 }}>
+                <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Penalties</Typography>
+                <TableContainer sx={{ marginTop: 2 }}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Driver</TableCell>
+                        <TableCell sx={numericColumn}>Penalty</TableCell>
+                        <TableCell>Reason</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {penalty.map((penalty) => (
+                        <StyledTableRow key={penalty.driver.uuid}>
+                          <PenaltyEntry {...penalty} as={TableCell} />
+                        </StyledTableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Box>
             ) : (
               <></>

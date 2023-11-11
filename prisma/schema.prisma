@@ -75,7 +75,7 @@ model EventResult {
   fastest_lap         FastestLap?   @relation(fields: [fastest_lap_uuid], references: [uuid])
   // results in no order
   results             ResultEntry[]
-  Penalty             Penalty[]
+  penalty             Penalty[]
 }
 
 model FastestLap {

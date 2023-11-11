@@ -3,7 +3,7 @@ import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
+import StyledTableRow from "../components/styledtablerow";
 import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -42,23 +42,23 @@ export default function CircuitPage() {
 
         <Grid item xs={12}>
           <TableContainer sx={{ marginTop: 2 }}>
-            <Table>
+            <Table stickyHeader>
               <TableHead>
-                <TableRow>
+                <StyledTableRow>
                   <TableCell>Date/Time</TableCell>
                   <TableCell sx={numericColumn}>Laps</TableCell>
                   <TableCell></TableCell>
-                </TableRow>
+                </StyledTableRow>
               </TableHead>
               <TableBody>
                 {sortedRaces.map((result: CircuitResult, ix: number) => (
-                  <TableRow key={result.uuid}>
+                  <StyledTableRow key={result.uuid}>
                     <TableCell>{formatRaceDate(result.date)}</TableCell>
                     <TableCell sx={numericColumn}>{result.laps}</TableCell>
                     <TableCell>
                       <Link href={`/result/${result.uuid}`}>View Results</Link>
                     </TableCell>
-                  </TableRow>
+                  </StyledTableRow>
                 ))}
               </TableBody>
             </Table>
