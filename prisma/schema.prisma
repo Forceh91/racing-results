@@ -27,6 +27,14 @@ model Team {
   aggregated_results AggreatedResultEntry[]
 }
 
+model Car {
+  id                   Int                    @id @default(autoincrement())
+  uuid                 String                 @unique @default(uuid())
+  name                 String
+  ResultEntry          ResultEntry[]
+  AggreatedResultEntry AggreatedResultEntry[]
+}
+
 model Event {
   id                 Int                    @id @default(autoincrement())
   uuid               String                 @unique @default(uuid())
@@ -102,8 +110,9 @@ model ResultEntry {
   laps              Int?
   // total time to complete event
   time              Int
-  // car name
-  car               String?
+  // car
+  car_uuid          String?
+  car               Car?         @relation(fields: [car_uuid], references: [uuid])
   // starting position
   grid              Int?
   // which event result this is part of
@@ -127,8 +136,9 @@ model AggreatedResultEntry {
   driver              Driver  @relation(fields: [driver_uuid], references: [uuid])
   // total time to complete event
   time                Int
-  // car name
-  car                 String?
+  // car
+  car_uuid            String?
+  car                 Car?    @relation(fields: [car_uuid], references: [uuid])
   // which event this is part of
   event_uuid          String?
   event               Event?  @relation(fields: [event_uuid], references: [uuid])
