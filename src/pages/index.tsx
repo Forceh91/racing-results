@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import Link from "next/link";
 import { useEventsOverview } from "hooks/useEventsOverview";
 import { format, parseISO } from "date-fns";
-import { DEFAULT_DATE_FORMAT } from "../../consts";
+import { DEFAULT_DATE_FORMAT } from "../consts";
 import StyledTableRow from "../components/styledtablerow";
 
 export default function Home() {
