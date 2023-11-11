@@ -11,6 +11,7 @@ model Driver {
   id                 Int                    @id @default(autoincrement())
   uuid               String                 @unique @default(uuid())
   name               String
+  nationality        String?
   created            DateTime               @default(now())
   fastest_laps       FastestLap[]
   results            ResultEntry[]
