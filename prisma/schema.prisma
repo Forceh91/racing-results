@@ -16,6 +16,7 @@ model Driver {
   fastest_laps       FastestLap[]
   results            ResultEntry[]
   aggregated_results AggreatedResultEntry[]
+  Penalty            Penalty[]
 }
 
 model Team {
@@ -74,6 +75,7 @@ model EventResult {
   fastest_lap         FastestLap?   @relation(fields: [fastest_lap_uuid], references: [uuid])
   // results in no order
   results             ResultEntry[]
+  Penalty             Penalty[]
 }
 
 model FastestLap {
@@ -153,4 +155,20 @@ model AggreatedResultEntry {
 enum EventType {
   CIRCUIT
   RALLY
+}
+
+model Penalty {
+  // penalty id
+  id Int @id @default(autoincrement())
+
+  // driver
+  driver_uuid String
+  driver      Driver @relation(fields: [driver_uuid], references: [uuid])
+
+  time   Int
+  reason String
+
+  // event result
+  event_result_uuid String
+  event_result      EventResult @relation(fields: [event_result_uuid], references: [uuid])
 }
