@@ -34,7 +34,7 @@ export const getResult = async (uuid: string) => {
       results: {
         select: {
           uuid: true,
-          driver: { select: { name: true } },
+          driver: { select: { name: true, nationality: true } },
           team: { select: { name: true } },
           car: true,
           finished: true,
@@ -50,7 +50,13 @@ export const getResult = async (uuid: string) => {
   // get the aggregate results for this event at this results point in time
   const aggregateResultForEvent = await prisma.aggreatedResultEntry.findMany({
     where: { event_uuid: result.event.uuid, event_result_number: result.event_result_number },
-    select: { id: false, driver: { select: { name: true } }, car: true, time: true, event_result_number: true },
+    select: {
+      id: false,
+      driver: { select: { name: true, nationality: true } },
+      car: true,
+      time: true,
+      event_result_number: true,
+    },
     orderBy: [{ time: "asc" }],
   });
 

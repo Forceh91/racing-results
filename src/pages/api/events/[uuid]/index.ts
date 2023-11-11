@@ -32,7 +32,13 @@ export const getEventInfo = async (eventUUID: string) => {
       end_date: true,
       results: { select: { id: false, event_result_number: true, uuid: true } },
       aggregated_results: {
-        select: { id: false, driver: { select: { name: true } }, car: true, time: true, event_result_number: true },
+        select: {
+          id: false,
+          driver: { select: { name: true, nationality: true } },
+          car: true,
+          time: true,
+          event_result_number: true,
+        },
         orderBy: [{ event_result_number: "desc" }, { time: "asc" }],
       },
     },

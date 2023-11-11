@@ -112,7 +112,7 @@ export default function ResultPage() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {results.map((result: ResultEntry, ix: number) => (
+                        {results.map((result, ix) => (
                           <TableRow key={result.driver_uuid} sx={{ opacity: result.finished ? 1 : 0.6 }}>
                             <ResultDriverEntry
                               {...result}

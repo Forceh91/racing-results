@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import { numericColumn } from "lib/table";
 import { convertMillsecondsToString } from "lib/time";
 import { ResultEntry } from "types";
+import Flags from "country-flag-icons/react/3x2";
 
 type ResultOverviewEntryProps = {
   as?: React.ElementType;
@@ -16,7 +17,7 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
     as: Component = Box,
     pos,
     driver_uuid,
-    driver: { name },
+    driver: { name, nationality },
     team,
     car,
     finished,
@@ -57,10 +58,22 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
     );
   };
 
+  const Nationality = () => {
+    if (!nationality?.length) return <></>;
+    // TODO: fix this error
+    const FlagComponent = Flags[nationality];
+    return <FlagComponent />;
+  };
+
   return (
     <>
       <Component sx={numericColumn}>{finished ? pos : ""}</Component>
-      <Component sx={{ fontWeight: 700 }}>{name}</Component>
+      <Component sx={{ fontWeight: 700, svg: { height: "1em", mr: 1 } }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {nationality && <Nationality />}
+          {name}
+        </Box>
+      </Component>
       <Component>
         {car}
         <br />
