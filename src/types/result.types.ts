@@ -13,6 +13,7 @@ export type Result = {
   type: ResultType;
   event_result_number: number;
   event: Partial<Event>;
+  aggregate_results?: AggregatedResultEntry[];
 };
 
 export enum ResultType {

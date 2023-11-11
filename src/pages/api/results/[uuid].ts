@@ -16,14 +16,14 @@ const eventResultUUIDRoute = async (req: NextApiRequest, resp: NextApiResponse) 
 
 const eventResultUUIDRouteGET = async (req: NextApiRequest, resp: NextApiResponse) => {
   const { uuid } = (req.query || {}) as { uuid: string };
-  return resp.json(await getEventInfo(uuid));
+  return resp.json(await getResult(uuid));
 };
 
-export const getEventInfo = async (uuid: string) => {
+export const getResult = async (uuid: string) => {
   if (!!!uuid?.length) throw "no uuid provided";
 
   // get event info from db
-  return await prisma.eventResult.findUniqueOrThrow({
+  const result = await prisma.eventResult.findUniqueOrThrow({
     where: { uuid },
     select: {
       id: false,
@@ -46,6 +46,15 @@ export const getEventInfo = async (uuid: string) => {
       event: { select: { uuid: true, results: { select: { uuid: true, event_result_number: true } } } },
     },
   });
+
+  // get the aggregate results for this event at this results point in time
+  const aggregateResultForEvent = await prisma.aggreatedResultEntry.findMany({
+    where: { event_uuid: result.event.uuid, event_result_number: result.event_result_number },
+    select: { id: false, driver: { select: { name: true } }, car: true, time: true, event_result_number: true },
+    orderBy: [{ time: "asc" }],
+  });
+
+  return { ...result, aggregate_results: aggregateResultForEvent };
 };
 
 export default eventResultUUIDRoute;
