@@ -71,7 +71,7 @@ export default function ResultPage() {
             {isRally && (
               <Box sx={{ my: 2, display: "flex", flexWrap: "wrap", alignContent: "space-between" }}>
                 <Link href={`/events/${event.uuid}`}>
-                  <Button variant="contained" size="large" color="primary" sx={{ mb: 1 }}>
+                  <Button variant="contained" size="large" color="primary" sx={{ mb: 1, mr: 1 }}>
                     <Typography>Overall Results</Typography>
                   </Button>
                 </Link>
@@ -80,11 +80,13 @@ export default function ResultPage() {
                   event.results
                     .sort((a, b) => a.event_result_number - b.event_result_number)
                     .map((eventResult) => (
-                      <Link href={`/events/${event.uuid}/results/${eventResult.uuid}`} key={eventResult.uuid}>
-                        <Button variant="contained" size="large" color="primary" sx={{ marginLeft: 1 }}>
-                          <Typography>Stage {eventResult.event_result_number}</Typography>
-                        </Button>
-                      </Link>
+                      <Box sx={{ "&:not(:last-child)": { marginRight: 1 } }} key={eventResult.uuid}>
+                        <Link href={`/events/${event.uuid}/results/${eventResult.uuid}`}>
+                          <Button variant="contained" size="large" color="primary">
+                            <Typography>Stage {eventResult.event_result_number}</Typography>
+                          </Button>
+                        </Link>
+                      </Box>
                     ))}
               </Box>
             )}
