@@ -1,13 +1,12 @@
 import { createTheme } from "@mui/material";
 
-import { Roboto_Mono, Comfortaa } from "@next/font/google";
+import { Inter } from "@next/font/google";
 
-const robotoMono = Roboto_Mono({ subsets: ["latin"] });
-const comfortaa = Comfortaa({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const theme = createTheme({
   typography: {
-    fontFamily: comfortaa.style.fontFamily,
+    fontFamily: inter.style.fontFamily,
     body1: { fontSize: "1.6rem" },
     body2: { fontSize: "1.6rem" },
     h1: { fontSize: "3.4rem" },
