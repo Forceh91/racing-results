@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>{process.env.NEXT_PUBLIC_APP_NAME}</title>
         </Head>
-        <Container sx={{ paddingY: 3 }}>
+        <Container maxWidth="xl" sx={{ paddingY: 3 }}>
           <Component {...pageProps} />
         </Container>
       </ThemeProvider>

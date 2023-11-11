@@ -67,9 +67,9 @@ export default function ResultPage() {
         <Grid container>
           <Grid item xs={12}>
             {isRally && (
-              <Box sx={{ my: 2, display: "flex" }}>
+              <Box sx={{ my: 2, display: "flex", flexWrap: "wrap", alignContent: "space-between" }}>
                 <Link href={`/events/${event.uuid}`}>
-                  <Button variant="contained" size="large" color="primary">
+                  <Button variant="contained" size="large" color="primary" sx={{ mb: 1 }}>
                     <Typography>Overall Results</Typography>
                   </Button>
                 </Link>
@@ -95,7 +95,7 @@ export default function ResultPage() {
 
             {results.length ? (
               <Box sx={{ my: 2, display: "flex" }}>
-                <Box>
+                <Box sx={{ width: "100%" }}>
                   <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>{isRally ? "Stage" : ""} Results</Typography>
                   <TableContainer sx={{ marginTop: 2 }}>
                     <Table>
@@ -128,7 +128,7 @@ export default function ResultPage() {
                   </TableContainer>
                 </Box>
                 {aggregate_results?.length ? (
-                  <Box sx={{ marginLeft: 4 }}>
+                  <Box sx={{ marginLeft: 4, width: "100%" }}>
                     <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Overall Results</Typography>
                     <TableContainer>
                       <Table>
