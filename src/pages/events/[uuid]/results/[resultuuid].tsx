@@ -31,7 +31,7 @@ export default function ResultPage() {
       <Grid container rowSpacing={3}>
         <Grid item xs={12}>
           <Alert variant="filled" severity="info">
-            Fetching event info...
+            Fetching results...
           </Alert>
         </Grid>
       </Grid>
@@ -42,7 +42,7 @@ export default function ResultPage() {
       <Grid container rowSpacing={3}>
         <Grid item xs={12}>
           <Alert variant="filled" severity="error">
-            Unable to fetch event data
+            Unable to fetch results
           </Alert>
         </Grid>
       </Grid>
@@ -98,7 +98,7 @@ export default function ResultPage() {
             {results.length ? (
               <Box sx={{ my: 2, display: "flex" }}>
                 <Box sx={{ width: "100%" }}>
-                  <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>{isRally ? "Stage" : ""} Results</Typography>
+                  <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>{isRally ? "Stage" : ""} Results</Typography>
                   <TableContainer sx={{ marginTop: 2 }}>
                     <Table stickyHeader>
                       <TableHead>
@@ -131,7 +131,7 @@ export default function ResultPage() {
                 </Box>
                 {aggregate_results?.length ? (
                   <Box sx={{ marginLeft: 4, width: "100%" }}>
-                    <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Overall Results</Typography>
+                    <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>Overall Results</Typography>
                     <TableContainer>
                       <Table stickyHeader>
                         <TableHead>
@@ -168,7 +168,7 @@ export default function ResultPage() {
 
             {penalty?.length ? (
               <Box sx={{ my: 2 }}>
-                <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Penalties</Typography>
+                <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>Penalties</Typography>
                 <TableContainer sx={{ marginTop: 2 }}>
                   <Table size="small">
                     <TableHead>
