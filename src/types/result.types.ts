@@ -1,3 +1,4 @@
+import { Car } from "./car.types";
 import { Circuit } from "./circuit.types";
 import { Driver } from "./driver.types";
 import { Event } from "./event.types";
@@ -35,7 +36,7 @@ export type ResultEntry = {
   laps?: number;
   finished: boolean;
   time: number; // milliseconds
-  car?: string;
+  car?: Car;
   team?: Team;
   fastest_lap?: ResultFastestLap;
   grid?: number;
@@ -46,7 +47,7 @@ export type AggregatedResultEntry = {
   driver: Driver;
   driver_number?: number;
   time: number; // milliseconds
-  car?: string;
+  car?: Car;
   team?: Team;
   event_result_number: number;
 };

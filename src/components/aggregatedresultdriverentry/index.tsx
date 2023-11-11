@@ -45,7 +45,7 @@ export default function AggregatedResultDriverEntry(props: AggregatedResultOverv
         </Box>
       </Component>
       <Component>
-        {car}
+        {car?.name}
         <br />
         {team ? team.name : "-"}
       </Component>

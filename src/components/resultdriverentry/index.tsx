@@ -75,7 +75,7 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
         </Box>
       </Component>
       <Component>
-        {car}
+        {car?.name}
         <br />
         {team?.name ?? "-"}
       </Component>
