@@ -20,7 +20,7 @@ const eventResultUUIDRouteGET = async (req: NextApiRequest, resp: NextApiRespons
 };
 
 export const getResult = async (uuid: string) => {
-  if (!!!uuid?.length) throw "no uuid provided";
+  if (!uuid?.length) throw "no uuid provided";
 
   // get event info from db
   const result = await prisma.eventResult.findUniqueOrThrow({

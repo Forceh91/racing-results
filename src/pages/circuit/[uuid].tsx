@@ -3,7 +3,6 @@ import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
-import StyledTableRow from "../components/styledtablerow";
 import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -12,7 +11,7 @@ import { format, parseISO } from "date-fns";
 import { CircuitResult, CircuitStats } from "types";
 import mockCircuitStats from "mocks/mockCircuitStats.json";
 import { convertLengthToKM, sortedCircuitResults } from "lib/circuit";
-import { numericColumn } from "lib/table";
+import { numericColumn, StyledTableRow } from "lib/table";
 
 type CircuitPageProps = {};
 

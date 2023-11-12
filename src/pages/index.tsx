@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useEventsOverview } from "hooks/useEventsOverview";
 import { format, parseISO } from "date-fns";
 import { DEFAULT_DATE_FORMAT } from "../consts";
-import StyledTableRow from "../components/styledtablerow";
+import StyledTableRow from "../lib/table";
 
 export default function Home() {
   const { data, error, isLoading, isSuccess } = useEventsOverview();

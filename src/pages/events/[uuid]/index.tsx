@@ -11,11 +11,10 @@ import Box from "@mui/material/Box";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import { useEvent } from "hooks/useEvents";
-import { numericColumn } from "lib/table";
+import { numericColumn, StyledTableRow } from "lib/table";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
 import AggregatedResultDriverEntry from "components/aggregatedresultdriverentry";
-import StyledTableRow from "components/styledtablerow";
 
 export default function EventInfo() {
   const router = useRouter();
