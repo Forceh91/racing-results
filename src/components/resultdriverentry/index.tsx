@@ -1,13 +1,14 @@
 import Box from "@mui/material/Box";
-import { numericColumn } from "lib/table";
-import { convertMillsecondsToString } from "lib/time";
+import { numericColumn, sxSubData } from "lib/table";
 import { ResultEntry } from "types";
 import Flags from "country-flag-icons/react/3x2";
+import { formatGap, formatLapTime, formatRaceTime } from "lib/time";
 
 type ResultOverviewEntryProps = {
   as?: React.ElementType;
   pos: number;
   winner: ResultEntry;
+  previousEntry?: ResultEntry;
   fastestLapHolder?: string;
   isRally: boolean;
 } & ResultEntry;
@@ -28,18 +29,8 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
     winner,
     fastestLapHolder,
     isRally,
+    previousEntry,
   } = props ?? {};
-
-  const { time: leaderTime, laps: leaderLaps } = winner;
-
-  const formattedRaceTime = (time: number, isGap: boolean = false) => {
-    if (laps && leaderLaps && laps < leaderLaps && isGap) return `+${leaderLaps - laps}L`;
-
-    if (!finished) return "";
-    return `${isGap ? "+" : ""}${convertMillsecondsToString(time, isGap)}`;
-  };
-
-  const formattedLapTime = (time: number) => convertMillsecondsToString(time);
 
   const formattedFastestLap = () => {
     if (!fastest_lap?.time) return "-";
@@ -48,10 +39,10 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
       <>
         {fastestLapHolder === driver_uuid && (
           <Box component="strong" sx={{ color: "magenta" }}>
-            {formattedLapTime(fastest_lap.time)}
+            {formatLapTime(fastest_lap.time)}
           </Box>
         )}
-        {fastestLapHolder !== driver_uuid && formattedLapTime(fastest_lap.time)}
+        {fastestLapHolder !== driver_uuid && formatLapTime(fastest_lap.time)}
         <br />
         Lap {fastest_lap.lap}
       </>
@@ -80,8 +71,11 @@ export default function ResultDriverEntry(props: ResultOverviewEntryProps) {
         {team?.name ?? "-"}
       </Component>
       {!isRally && <Component sx={numericColumn}>{laps ?? "-"}</Component>}
-      <Component sx={numericColumn}>{formattedRaceTime(time)}</Component>
-      <Component sx={numericColumn}>{formattedRaceTime(time - leaderTime, true)}</Component>
+      <Component sx={numericColumn}>{formatRaceTime(time, finished)}</Component>
+      <Component sx={numericColumn}>
+        {formatGap(time, winner, finished, laps)}
+        {previousEntry && <Box sx={sxSubData}>{formatGap(time, previousEntry, finished, laps)}</Box>}
+      </Component>
       {!isRally && (
         <>
           <Component sx={numericColumn}>{formattedFastestLap()}</Component>

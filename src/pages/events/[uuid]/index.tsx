@@ -91,6 +91,7 @@ export default function EventInfo() {
                         {...result}
                         as={TableCell}
                         winner={sortedAggregateResults[0]}
+                        {...(ix && { previousEntry: sortedAggregateResults[ix - 1] })}
                         pos={ix + 1}
                       />
                     </StyledTableRow>

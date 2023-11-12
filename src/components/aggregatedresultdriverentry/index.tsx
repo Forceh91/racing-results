@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
-import { numericColumn } from "lib/table";
-import { convertMillsecondsToString } from "lib/time";
+import { numericColumn, sxSubData } from "lib/table";
+import { convertMillsecondsToString, formatGap, formatGapAsTimeOnly, formatRaceTime } from "lib/time";
 import { AggregatedResultEntry } from "types";
 import Flags from "country-flag-icons/react/3x2";
 
@@ -8,6 +8,7 @@ type AggregatedResultOverviewEntryProps = {
   as?: React.ElementType;
   pos: number;
   winner: AggregatedResultEntry;
+  previousEntry?: AggregatedResultEntry;
 } & AggregatedResultEntry;
 
 export default function AggregatedResultDriverEntry(props: AggregatedResultOverviewEntryProps) {
@@ -20,13 +21,8 @@ export default function AggregatedResultDriverEntry(props: AggregatedResultOverv
     car,
     time,
     winner,
+    previousEntry,
   } = props ?? {};
-
-  const { time: leaderTime } = winner;
-
-  const formattedRaceTime = (time: number, isGap: boolean = false) => {
-    return `${isGap ? "+" : ""}${convertMillsecondsToString(time, isGap)}`;
-  };
 
   const Nationality = () => {
     if (!nationality?.length) return <></>;
@@ -49,8 +45,11 @@ export default function AggregatedResultDriverEntry(props: AggregatedResultOverv
         <br />
         {team ? team.name : "-"}
       </Component>
-      <Component sx={numericColumn}>{formattedRaceTime(time)}</Component>
-      <Component sx={numericColumn}>{formattedRaceTime(time - leaderTime, true)}</Component>
+      <Component sx={numericColumn}>{formatRaceTime(time)}</Component>
+      <Component sx={numericColumn}>
+        {formatGapAsTimeOnly(time, winner)}
+        {previousEntry && <Box sx={sxSubData}>{formatGapAsTimeOnly(time, previousEntry)}</Box>}
+      </Component>
     </>
   );
 }

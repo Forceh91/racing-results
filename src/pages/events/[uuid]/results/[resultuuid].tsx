@@ -121,6 +121,7 @@ export default function ResultPage() {
                               {...result}
                               as={TableCell}
                               winner={winner}
+                              {...(ix && { previousEntry: results[ix - 1] })}
                               pos={ix + 1}
                               isRally={isRally}
                             ></ResultDriverEntry>
@@ -151,6 +152,7 @@ export default function ResultPage() {
                                 {...result}
                                 as={TableCell}
                                 winner={aggregate_results[0]}
+                                {...(ix && { previousEntry: aggregate_results[ix - 1] })}
                                 pos={ix + 1}
                               />
                             </StyledTableRow>
