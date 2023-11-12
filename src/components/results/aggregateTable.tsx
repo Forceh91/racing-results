@@ -5,7 +5,7 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { AggregatedResultEntry } from "types";
-import StyledTableRow, { numericColumn } from "lib/table";
+import StyledTableRow, { numericColumn, sxBoldTableHeaders } from "lib/table";
 import { sortAggregatedResults } from "lib/results";
 import AggregatedResultDriverEntry from "components/aggregatedresultdriverentry";
 
@@ -20,7 +20,7 @@ export const AggregateResultsTable = (props: AggregateResultsTableProps) => {
   return (
     <TableContainer sx={{ marginTop: 2 }}>
       <Table stickyHeader>
-        <TableHead>
+        <TableHead sx={sxBoldTableHeaders}>
           <TableRow>
             <TableCell sx={numericColumn}>Pos</TableCell>
             <TableCell>Driver</TableCell>

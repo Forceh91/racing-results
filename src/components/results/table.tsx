@@ -5,7 +5,7 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { ResultEntry, ResultType } from "types";
-import StyledTableRow, { numericColumn } from "lib/table";
+import StyledTableRow, { numericColumn, sxBoldTableHeaders } from "lib/table";
 import ResultDriverEntry from "components/resultdriverentry";
 import { sortResults } from "lib/results";
 
@@ -23,7 +23,7 @@ export const ResultsTable = (props: ResultsTableProps) => {
   return (
     <TableContainer sx={{ marginTop: 2 }}>
       <Table stickyHeader>
-        <TableHead>
+        <TableHead sx={sxBoldTableHeaders}>
           <TableRow>
             <TableCell sx={numericColumn}>Pos</TableCell>
             <TableCell>Driver</TableCell>
