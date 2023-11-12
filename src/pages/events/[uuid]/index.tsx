@@ -15,6 +15,7 @@ import { numericColumn, StyledTableRow } from "lib/table";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
 import AggregatedResultDriverEntry from "components/aggregatedresultdriverentry";
+import { AggregateResultsTable } from "components/results";
 
 export default function EventInfo() {
   const router = useRouter();
@@ -73,32 +74,7 @@ export default function EventInfo() {
               </Typography>
             </Box>
 
-            <TableContainer sx={{ marginTop: 2 }}>
-              <Table stickyHeader>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={numericColumn}>Pos</TableCell>
-                    <TableCell>Driver</TableCell>
-                    <TableCell>Car/Team</TableCell>
-                    <TableCell sx={numericColumn}>Time</TableCell>
-                    <TableCell sx={numericColumn}>Gap</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {sortedAggregateResults.map((result, ix) => (
-                    <StyledTableRow key={result.driver_uuid}>
-                      <AggregatedResultDriverEntry
-                        {...result}
-                        as={TableCell}
-                        winner={sortedAggregateResults[0]}
-                        {...(ix && { previousEntry: sortedAggregateResults[ix - 1] })}
-                        pos={ix + 1}
-                      />
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <AggregateResultsTable results={sortedAggregateResults} />
           </>
         )}
       </Grid>

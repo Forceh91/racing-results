@@ -1,25 +1,24 @@
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Link from "next/link";
 import Button from "@mui/material/Button";
+import Table from "@mui/material/Table";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 
 import { ResultType } from "types";
-import ResultDriverEntry from "components/resultdriverentry";
-import { sortResults } from "lib/results";
 import { numericColumn, StyledTableRow } from "lib/table";
 import { useRouter } from "next/router";
 import { useEventResult } from "hooks";
-import AggregatedResultDriverEntry from "components/aggregatedresultdriverentry";
 import { convertLengthToKM } from "lib/circuit";
 import PenaltyEntry from "components/penalty";
+import { ResultsTable } from "components/results";
+import { AggregateResultsTable } from "components/results";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -48,10 +47,7 @@ export default function ResultPage() {
     );
 
   const { event, event_result_number, circuit, results, fastest_lap, type, aggregate_results, penalty } = result ?? {};
-
   const isRally = type === ResultType.RALLY;
-  const sortedResults = sortResults(results);
-  const winner = sortedResults[0];
 
   return (
     <Grid container rowSpacing={3}>
@@ -100,66 +96,12 @@ export default function ResultPage() {
               <Box sx={{ my: 2, display: "flex" }}>
                 <Box sx={{ width: "100%" }}>
                   <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>{isRally ? "Stage" : ""} Results</Typography>
-                  <TableContainer sx={{ marginTop: 2 }}>
-                    <Table stickyHeader>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell sx={numericColumn}>Pos</TableCell>
-                          <TableCell>Driver</TableCell>
-                          <TableCell>Car/Team</TableCell>
-                          {!isRally && <TableCell sx={numericColumn}>Laps</TableCell>}
-                          <TableCell sx={numericColumn}>Time</TableCell>
-                          <TableCell sx={numericColumn}>Gap</TableCell>
-                          {!isRally && <TableCell sx={numericColumn}>Fastest Lap</TableCell>}
-                          {!isRally && <TableCell sx={numericColumn}>Grid</TableCell>}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {results.map((result, ix) => (
-                          <StyledTableRow key={result.driver_uuid} sx={{ opacity: result.finished ? 1 : 0.6 }}>
-                            <ResultDriverEntry
-                              {...result}
-                              as={TableCell}
-                              winner={winner}
-                              {...(ix && { previousEntry: results[ix - 1] })}
-                              pos={ix + 1}
-                              isRally={isRally}
-                            ></ResultDriverEntry>
-                          </StyledTableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                  <ResultsTable results={results} resultType={type} />
                 </Box>
                 {aggregate_results?.length ? (
                   <Box sx={{ marginLeft: 4, width: "100%" }}>
                     <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>Overall Results</Typography>
-                    <TableContainer>
-                      <Table stickyHeader>
-                        <TableHead>
-                          <StyledTableRow>
-                            <TableCell sx={numericColumn}>Pos</TableCell>
-                            <TableCell>Driver</TableCell>
-                            <TableCell>Car/Team</TableCell>
-                            <TableCell sx={numericColumn}>Time</TableCell>
-                            <TableCell sx={numericColumn}>Gap</TableCell>
-                          </StyledTableRow>
-                        </TableHead>
-                        <TableBody>
-                          {aggregate_results.map((result, ix) => (
-                            <StyledTableRow key={result.driver_uuid}>
-                              <AggregatedResultDriverEntry
-                                {...result}
-                                as={TableCell}
-                                winner={aggregate_results[0]}
-                                {...(ix && { previousEntry: aggregate_results[ix - 1] })}
-                                pos={ix + 1}
-                              />
-                            </StyledTableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                    <AggregateResultsTable results={aggregate_results} />
                   </Box>
                 ) : (
                   <></>
