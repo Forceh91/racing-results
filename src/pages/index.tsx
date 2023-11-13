@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useEventsOverview } from "hooks/useEventsOverview";
 import { format, parseISO } from "date-fns";
 import { DEFAULT_DATE_FORMAT } from "../consts";
-import StyledTableRow from "../lib/table";
+import StyledTableRow, { sxBoldTableHeaders } from "../lib/table";
 
 export default function Home() {
   const { data, error, isLoading, isSuccess } = useEventsOverview();
@@ -19,9 +19,7 @@ export default function Home() {
   return (
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
-        <Box sx={{ my: 1 }}>
-          <Typography variant="h1">{process.env.NEXT_PUBLIC_APP_NAME}</Typography>
-
+        <Box sx={{ mb: 1 }}>
           <Typography variant="h2" sx={{ marginTop: 2 }}>
             Latest Events
           </Typography>
@@ -42,7 +40,7 @@ export default function Home() {
         {isSuccess && (
           <TableContainer sx={{ marginTop: 2 }}>
             <Table stickyHeader>
-              <TableHead>
+              <TableHead sx={sxBoldTableHeaders}>
                 <StyledTableRow>
                   <TableCell>Event Date</TableCell>
                   <TableCell>Event Name</TableCell>
