@@ -21,6 +21,9 @@ export type Event = {
 export type EventResultIdentifier = {
   uuid: string;
   event_result_number: number;
+  circuit: {
+    name: string;
+  };
 };
 
 export type EventResultIdentifiers = EventResultIdentifier[];

@@ -30,7 +30,7 @@ export const getEventInfo = async (eventUUID: string) => {
       name: true,
       start_date: true,
       end_date: true,
-      results: { select: { id: false, event_result_number: true, uuid: true } },
+      results: { select: { id: false, event_result_number: true, uuid: true, circuit: { select: { name: true } } } },
       aggregated_results: {
         select: {
           id: false,
@@ -44,6 +44,7 @@ export const getEventInfo = async (eventUUID: string) => {
     },
   });
 
+  // if we have aggregated results, figure out the highest event_result to display
   const highestAggregateEventResultNumber = aggregated_results.length ? aggregated_results[0].event_result_number : 1;
 
   return {

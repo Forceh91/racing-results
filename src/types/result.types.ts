@@ -19,6 +19,8 @@ export type Result = {
   penalty?: Penalty[];
 };
 
+export type Results = Result[];
+
 export enum ResultType {
   CIRCUIT = "CIRCUIT",
   RALLY = "RALLY",

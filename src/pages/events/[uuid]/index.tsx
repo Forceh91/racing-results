@@ -1,9 +1,3 @@
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
@@ -11,11 +5,10 @@ import Box from "@mui/material/Box";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import { useEvent } from "hooks/useEvents";
-import { numericColumn, StyledTableRow } from "lib/table";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
-import AggregatedResultDriverEntry from "components/aggregatedresultdriverentry";
 import { AggregateResultsTable } from "components/results";
+import { EventResultsTable } from "components/events";
 
 export default function EventInfo() {
   const router = useRouter();
@@ -56,7 +49,7 @@ export default function EventInfo() {
         </Box>
 
         {/* if we've got aggregated results we should show them as priority rather than a list of results to click into */}
-        {sortedAggregateResults && (
+        {sortedAggregateResults ? (
           <>
             <Box sx={{ my: 2, display: "flex" }}>
               {latestEventResult && (
@@ -76,6 +69,8 @@ export default function EventInfo() {
 
             <AggregateResultsTable results={sortedAggregateResults} />
           </>
+        ) : (
+          <EventResultsTable eventResults={event.results} eventUUID={event.uuid} />
         )}
       </Grid>
     </Grid>

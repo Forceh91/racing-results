@@ -60,7 +60,7 @@ export default function Home() {
                     <TableCell>{format(parseISO(event.start_date), DEFAULT_DATE_FORMAT)}</TableCell>
                     <TableCell>{event.name}</TableCell>
                     <TableCell>
-                      {event.results?.length && <Link href={`/events/${event.uuid}/`}>View Event</Link>}
+                      <Link href={`/events/${event.uuid}/`}>View Event</Link>
                     </TableCell>
                   </StyledTableRow>
                 ))}
