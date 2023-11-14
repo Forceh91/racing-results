@@ -1,4 +1,4 @@
-import { AggregatedResultEntry } from "./result.types";
+import { AggregatedResultEntry, ResultType } from "./result.types";
 
 export type EventOverview = {
   uuid: string;
@@ -21,6 +21,8 @@ export type Event = {
 export type EventResultIdentifier = {
   uuid: string;
   event_result_number: number;
+  leg: number;
+  type: ResultType;
   circuit: {
     name: string;
     length: number;

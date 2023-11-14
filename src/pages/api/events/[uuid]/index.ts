@@ -31,7 +31,14 @@ export const getEventInfo = async (eventUUID: string) => {
       start_date: true,
       end_date: true,
       results: {
-        select: { id: false, event_result_number: true, uuid: true, circuit: { select: { name: true, length: true } } },
+        select: {
+          id: false,
+          leg: true,
+          event_result_number: true,
+          type: true,
+          uuid: true,
+          circuit: { select: { name: true, length: true } },
+        },
       },
       aggregated_results: {
         select: {
