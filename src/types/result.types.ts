@@ -54,6 +54,8 @@ export type AggregatedResultEntry = {
   car?: Car;
   team?: Team;
   event_result_number: number;
+  retired?: boolean;
+  retired_reason?: string;
 };
 
 export type ResultOverview = {

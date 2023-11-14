@@ -67,7 +67,7 @@ export default function EventInfo() {
               </Typography>
             </Box>
 
-            <AggregateResultsTable results={sortedAggregateResults} />
+            <AggregateResultsTable results={sortedAggregateResults} retirements={event.retirements} />
           </>
         ) : (
           <EventResultsTable eventResults={event.results} eventUUID={event.uuid} />

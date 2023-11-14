@@ -15,6 +15,7 @@ export type Event = {
   end_date?: string;
   results: EventResultIdentifiers;
   aggregated_results: AggregatedResultEntry[];
+  retirements: AggregatedResultEntry[];
   event_result_number: number;
 };
 

@@ -47,6 +47,8 @@ export const getEventInfo = async (eventUUID: string) => {
           car: true,
           time: true,
           event_result_number: true,
+          retired: true,
+          retired_reason: true,
         },
         orderBy: [{ event_result_number: "desc" }, { time: "asc" }],
       },
@@ -55,13 +57,17 @@ export const getEventInfo = async (eventUUID: string) => {
 
   // if we have aggregated results, figure out the highest event_result to display
   const highestAggregateEventResultNumber = aggregated_results.length ? aggregated_results[0].event_result_number : 1;
+  const running = aggregated_results.filter(
+    (aggregatedResult) =>
+      !aggregatedResult.retired && aggregatedResult.event_result_number === highestAggregateEventResultNumber
+  );
+  const retirements = aggregated_results.filter((aggregatedResult) => aggregatedResult.retired);
 
   return {
     ...rest,
     results,
-    aggregated_results: aggregated_results.filter(
-      (aggregatedResult) => aggregatedResult.event_result_number === highestAggregateEventResultNumber
-    ),
+    aggregated_results: running,
+    retirements,
     event_result_number: highestAggregateEventResultNumber,
   };
 };
