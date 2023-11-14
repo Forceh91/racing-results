@@ -74,14 +74,36 @@ export default function ResultPage() {
                 {event.results?.length &&
                   event.results
                     .sort((a, b) => a.event_result_number - b.event_result_number)
-                    .map((eventResult) => (
-                      <Box sx={{ "&:not(:last-child)": { marginRight: 1 } }} key={eventResult.uuid}>
-                        <Link href={`/events/${event.uuid}/results/${eventResult.uuid}`}>
-                          <Button variant="contained" size="large" color="primary">
-                            <Typography>Stage {eventResult.event_result_number}</Typography>
-                          </Button>
-                        </Link>
-                      </Box>
+                    .map((eventResult, ix, _eventResults) => (
+                      <>
+                        {isRally && _eventResults[ix - 1]?.leg !== eventResult.leg ? (
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                              background: "#3719d2",
+                              borderRadius: 1,
+                              color: "white",
+                              display: "flex",
+                              mb: 1,
+                              mr: 1,
+                              py: 1,
+                              px: 2,
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            <Typography>Leg {eventResult.leg}</Typography>
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
+                        <Box sx={{ "&:not(:last-child)": { marginRight: 1 } }} key={eventResult.uuid}>
+                          <Link href={`/events/${event.uuid}/results/${eventResult.uuid}`}>
+                            <Button variant="contained" size="large" color="primary">
+                              <Typography>Stage {eventResult.event_result_number}</Typography>
+                            </Button>
+                          </Link>
+                        </Box>
+                      </>
                     ))}
               </Box>
             )}
