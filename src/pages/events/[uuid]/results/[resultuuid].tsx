@@ -53,7 +53,7 @@ export default function ResultPage() {
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
         <Box sx={{ marginBottom: 2 }}>
-          <Typography variant="h1">Result</Typography>
+          <Typography variant="h1">Result - {event.name}</Typography>
 
           <Typography variant="h2">
             {isRally ? `${event_result_number.toString().padStart(2, "0")}.` : ""} {circuit.name}{" "}
