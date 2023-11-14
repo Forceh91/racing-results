@@ -4,17 +4,19 @@ import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
+import Link from "next/link";
 import { EventResultIdentifiers } from "types";
 import StyledTableRow, { numericColumn, sxBoldTableHeaders } from "lib/table";
-import Link from "next/link";
+import { convertLengthToKM } from "lib/circuit";
 
-type ResultsTableProps = {
+type EventResultsTableProps = {
   eventUUID: string;
   eventResults: EventResultIdentifiers;
 };
 
-export const EventResultsTable = (props: ResultsTableProps) => {
-  const { eventResults, eventUUID } = props;
+export const EventResultsTable = (props: EventResultsTableProps) => {
+  const { eventUUID, eventResults } = props;
+
   return (
     <TableContainer sx={{ marginTop: 2 }}>
       <Table stickyHeader>
@@ -22,6 +24,7 @@ export const EventResultsTable = (props: ResultsTableProps) => {
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell>Location</TableCell>
+            <TableCell sx={numericColumn}>Length</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -31,6 +34,7 @@ export const EventResultsTable = (props: ResultsTableProps) => {
               <StyledTableRow key={eventResult.uuid}>
                 <TableCell>{eventResult.event_result_number}</TableCell>
                 <TableCell>{eventResult.circuit.name}</TableCell>
+                <TableCell sx={numericColumn}>{convertLengthToKM(eventResult.circuit.length)} km</TableCell>
                 <TableCell>
                   {eventResults?.length ? (
                     <Link href={`/events/${eventUUID}/results/${eventResult.uuid}`}>View Results</Link>

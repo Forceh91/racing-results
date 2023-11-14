@@ -23,6 +23,7 @@ export type EventResultIdentifier = {
   event_result_number: number;
   circuit: {
     name: string;
+    length: number;
   };
 };
 
