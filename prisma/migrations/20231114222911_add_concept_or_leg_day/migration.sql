@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "EventResult" ADD COLUMN     "leg" INTEGER NOT NULL DEFAULT 1;

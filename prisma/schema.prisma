@@ -76,6 +76,8 @@ model EventResult {
   // results in no order
   results             ResultEntry[]
   penalty             Penalty[]
+  // what leg/day this race/stage was on
+  leg                 Int           @default(1)
 }
 
 model FastestLap {
