@@ -152,6 +152,10 @@ model AggreatedResultEntry {
   // what team they were with
   team_uuid String?
   team      Team?   @relation(fields: [team_uuid], references: [uuid])
+
+  // have they retired? :(
+  retired        Boolean?
+  retired_reason String?
 }
 
 enum EventType {
