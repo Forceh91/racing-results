@@ -63,7 +63,7 @@ export default function EventInfo() {
 
             <Box sx={{ my: 1 }}>
               <Typography variant="h3" sx={{ marginTop: 2 }}>
-                Overall Standings (After {event.event_result_number} stages)
+                Overall Standings (After Stage {event.event_result_number})
               </Typography>
             </Box>
 
