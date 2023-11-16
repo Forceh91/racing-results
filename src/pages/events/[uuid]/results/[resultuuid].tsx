@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
 import { ResultType } from "types";
-import { numericColumn, StyledTableRow } from "lib/table";
+import { numericColumn, StyledTableRow, sxBoldTableHeaders } from "lib/table";
 import { useRouter } from "next/router";
 import { useEventResult } from "hooks";
 import { convertLengthToKM } from "lib/circuit";
@@ -138,7 +138,7 @@ export default function ResultPage() {
                 <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>Penalties</Typography>
                 <TableContainer sx={{ marginTop: 2 }}>
                   <Table size="small">
-                    <TableHead>
+                    <TableHead sx={sxBoldTableHeaders}>
                       <TableRow>
                         <TableCell>Driver</TableCell>
                         <TableCell sx={numericColumn}>Penalty</TableCell>
