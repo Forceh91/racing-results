@@ -1,5 +1,5 @@
 import { AggregatedResultEntry, ResultEntry } from "types";
-import { convertMillsecondsToString } from "./time";
+import { convertMillisecondsToMinSecString, convertMillsecondsToString } from "./time";
 
 export const formatRaceTime = (time: number, finished: boolean = true) =>
   finished ? convertMillsecondsToString(time) : "";
@@ -16,3 +16,5 @@ export const formatGapAsTimeOnly = (
 ) => (finished ? `+${convertMillsecondsToString(time - comparison.time, true)}` : "");
 
 export const formatLapTime = (time: number) => convertMillsecondsToString(time);
+
+export const formatPenaltyTime = (time: number) => convertMillisecondsToMinSecString(time);

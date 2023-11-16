@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { numericColumn } from "lib/table";
-import { convertMillsecondsToString } from "lib/time";
+import { formatPenaltyTime } from "lib/time";
 import { Penalty } from "types";
 import Flags from "country-flag-icons/react/3x2";
 
@@ -31,7 +31,7 @@ export default function PenaltyEntry(props: PenaltyEntryProps) {
           {name}
         </Box>
       </Component>
-      <Component sx={{ ...numericColumn, color: "red" }}>{convertMillsecondsToString(time)}</Component>
+      <Component sx={{ ...numericColumn, color: "red" }}>{formatPenaltyTime(time)}</Component>
       <Component>{reason}</Component>
     </>
   );

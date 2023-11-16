@@ -38,3 +38,10 @@ export function convertMillsecondsToString(milliseconds: number, isShort: boolea
 
   return `${formattedTimeString}.${millisecondsString}`;
 }
+
+export const convertMillisecondsToMinSecString = (ms: number) => {
+  const { minutes, seconds } = createDurationPyramidFromMilliseconds(ms);
+  if (!minutes && !seconds) return "";
+
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+};
