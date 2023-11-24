@@ -2,13 +2,12 @@ import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Link from "next/link";
-import Button from "@mui/material/Button";
 import { useEvent } from "hooks/useEvents";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
 import { AggregateResultsTable } from "components/results";
 import { EventResultsTable } from "components/events";
+import { EventHeader } from "components/events";
 
 export default function EventInfo() {
   const router = useRouter();
@@ -37,30 +36,20 @@ export default function EventInfo() {
     );
 
   const sortedAggregateResults = event.aggregated_results.length && sortAggregatedResults(event.aggregated_results);
-  const latestEventResult = (event.results?.length && event.results[event.event_result_number - 1]) ?? false;
+  const latestEventResult = (event.results && event.results[event.event_result_number - 1]) ?? false;
 
   return (
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
-        <Box sx={{ my: 1 }}>
-          <Typography variant="h2" sx={{ marginTop: 2 }}>
-            Event - {event.name}
-          </Typography>
-        </Box>
+        <EventHeader
+          event={event}
+          hasAggregatedResults={event.aggregated_results.length > 0}
+          latestResultUUID={latestEventResult?.uuid}
+        />
 
         {/* if we've got aggregated results we should show them as priority rather than a list of results to click into */}
         {sortedAggregateResults ? (
           <>
-            <Box sx={{ my: 2, display: "flex" }}>
-              {latestEventResult && (
-                <Link href={`/events/${event.uuid}/results/${latestEventResult.uuid}`}>
-                  <Button variant="contained" size="large" color="primary">
-                    <Typography>Stage Results</Typography>
-                  </Button>
-                </Link>
-              )}
-            </Box>
-
             <Box sx={{ my: 1 }}>
               <Typography variant="h3" sx={{ marginTop: 2 }}>
                 Overall Standings (After Stage {event.event_result_number})
