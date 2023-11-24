@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { useEventResult } from "hooks";
 import { convertLengthToKM } from "lib/circuit";
 import PenaltyEntry from "components/penalty";
-import { ResultsTable } from "components/results";
+import { ResultsTable, StageList } from "components/results";
 import { AggregateResultsTable } from "components/results";
 import { EventHeader } from "components/events";
 
@@ -61,6 +61,12 @@ export default function ResultPage() {
             latestResultUUID={uuid}
           />
 
+          {isRally && event.results.length ? (
+            <StageList eventUUID={event.uuid} stages={event.results} currentStage={event_result_number} />
+          ) : (
+            <></>
+          )}
+
           <Typography variant="h2" sx={{ fontWeight: 400 }}>
             {isRally ? `Stage ${event_result_number.toString().padStart(2, "0")}.` : ""} {circuit.name}{" "}
             {circuit.length ? `(${convertLengthToKM(circuit.length)}km)` : ""}
@@ -69,51 +75,6 @@ export default function ResultPage() {
 
         <Grid container>
           <Grid item xs={12}>
-            {isRally && (
-              <Box sx={{ my: 2, display: "flex", flexWrap: "wrap", alignContent: "space-between" }}>
-                <Link href={`/events/${event.uuid}`}>
-                  <Button variant="contained" size="large" color="primary" sx={{ mb: 1, mr: 1 }}>
-                    <Typography>Overall Results</Typography>
-                  </Button>
-                </Link>
-
-                {event.results?.length &&
-                  event.results
-                    .sort((a, b) => a.event_result_number - b.event_result_number)
-                    .map((eventResult, ix, _eventResults) => (
-                      <>
-                        {isRally && _eventResults[ix - 1]?.leg !== eventResult.leg ? (
-                          <Box
-                            sx={{
-                              alignItems: "center",
-                              background: "#3719d2",
-                              borderRadius: 1,
-                              color: "white",
-                              display: "flex",
-                              mb: 1,
-                              mr: 1,
-                              py: 1,
-                              px: 2,
-                              textTransform: "uppercase",
-                            }}
-                          >
-                            <Typography>Leg {eventResult.leg}</Typography>
-                          </Box>
-                        ) : (
-                          <></>
-                        )}
-                        <Box sx={{ "&:not(:last-child)": { marginRight: 1 } }} key={eventResult.uuid}>
-                          <Link href={`/events/${event.uuid}/results/${eventResult.uuid}`}>
-                            <Button variant="contained" size="large" color="primary">
-                              <Typography>Stage {eventResult.event_result_number}</Typography>
-                            </Button>
-                          </Link>
-                        </Box>
-                      </>
-                    ))}
-              </Box>
-            )}
-
             {!results.length && (
               <Alert variant="filled" severity="warning">
                 No results are available yet
