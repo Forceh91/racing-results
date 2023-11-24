@@ -1,7 +1,7 @@
 import { Car } from "./car.types";
 import { Circuit } from "./circuit.types";
 import { Driver } from "./driver.types";
-import { Event } from "./event.types";
+import { ResultEvent } from "./event.types";
 import { Penalty } from "./penalty.types";
 import { Team } from "./team.types";
 
@@ -14,7 +14,7 @@ export type Result = {
   results: ResultEntry[];
   type: ResultType;
   event_result_number: number;
-  event: Partial<Event>;
+  event: ResultEvent;
   aggregate_results?: AggregatedResultEntry[];
   penalty?: Penalty[];
 };

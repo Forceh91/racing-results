@@ -30,4 +30,16 @@ export type EventResultIdentifier = {
   };
 };
 
+export type ResultEvent = {
+  uuid: string;
+  name: string;
+  results: ResultEventItinerary[];
+};
+
+export type ResultEventItinerary = {
+  uuid: string;
+  event_result_number: number;
+  leg: number;
+};
+
 export type EventResultIdentifiers = EventResultIdentifier[];

@@ -19,6 +19,7 @@ import { convertLengthToKM } from "lib/circuit";
 import PenaltyEntry from "components/penalty";
 import { ResultsTable } from "components/results";
 import { AggregateResultsTable } from "components/results";
+import { EventHeader } from "components/events";
 
 export default function ResultPage() {
   const router = useRouter();
@@ -46,17 +47,22 @@ export default function ResultPage() {
       </Grid>
     );
 
-  const { event, event_result_number, circuit, results, fastest_lap, type, aggregate_results, penalty } = result ?? {};
+  const { uuid, event, event_result_number, circuit, results, fastest_lap, type, aggregate_results, penalty } =
+    result ?? {};
   const isRally = type === ResultType.RALLY;
 
   return (
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
         <Box sx={{ marginBottom: 2 }}>
-          <Typography variant="h1">Result - {event.name}</Typography>
+          <EventHeader
+            event={event}
+            hasAggregatedResults={(aggregate_results && aggregate_results.length > 0) ?? false}
+            latestResultUUID={uuid}
+          />
 
-          <Typography variant="h2">
-            {isRally ? `${event_result_number.toString().padStart(2, "0")}.` : ""} {circuit.name}{" "}
+          <Typography variant="h2" sx={{ fontWeight: 400 }}>
+            {isRally ? `Stage ${event_result_number.toString().padStart(2, "0")}.` : ""} {circuit.name}{" "}
             {circuit.length ? `(${convertLengthToKM(circuit.length)}km)` : ""}
           </Typography>
         </Box>
