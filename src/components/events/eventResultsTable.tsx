@@ -5,18 +5,18 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Link from "next/link";
-import { _EventResultIdentifiers, ResultType } from "types";
+import { _EventResultIdentifiers, EventItinerary, ItineraryEntry, ResultType } from "types";
 import StyledTableRow, { numericColumn, sxBoldTableHeaders } from "lib/table";
 import { convertLengthToKM } from "lib/circuit";
 
 type EventResultsTableProps = {
   eventUUID: string;
-  eventResults: _EventResultIdentifiers;
+  intinerary: ItineraryEntry[];
 };
 
 export const EventResultsTable = (props: EventResultsTableProps) => {
-  const { eventUUID, eventResults } = props;
-  const isRally = eventResults.some((eventResult) => eventResult.type === ResultType.RALLY);
+  const { eventUUID, intinerary } = props;
+  const isRally = intinerary.some((eventResult) => eventResult.type === ResultType.RALLY);
 
   return (
     <TableContainer sx={{ marginTop: 2 }}>
@@ -30,25 +30,27 @@ export const EventResultsTable = (props: EventResultsTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {eventResults.length ? (
-            eventResults.map((eventResult, ix, _eventResults) => (
+          {intinerary.length ? (
+            intinerary.map((intineraryEntry, ix) => (
               <>
-                {isRally && _eventResults[ix - 1]?.leg !== eventResult.leg ? (
+                {isRally && intinerary[ix - 1]?.leg !== intineraryEntry.leg ? (
                   <TableRow>
                     <TableCell colSpan={4} sx={{ fontWeight: 700 }}>
-                      Leg {eventResult.leg}
+                      Leg {intineraryEntry.leg}
                     </TableCell>
                   </TableRow>
                 ) : (
                   <></>
                 )}
-                <StyledTableRow key={eventResult.uuid}>
-                  <TableCell>{eventResult.event_result_number}</TableCell>
-                  <TableCell>{eventResult.circuit.name}</TableCell>
-                  <TableCell sx={numericColumn}>{convertLengthToKM(eventResult.circuit.length)} km</TableCell>
+                <StyledTableRow key={intineraryEntry.uuid}>
+                  <TableCell>{intineraryEntry.event_result_number}</TableCell>
+                  <TableCell>{intineraryEntry.circuit.name}</TableCell>
+                  <TableCell sx={numericColumn}>
+                    {intineraryEntry.circuit.length ? `${convertLengthToKM(intineraryEntry.circuit.length)} km` : "-"}
+                  </TableCell>
                   <TableCell>
-                    {eventResults?.length ? (
-                      <Link href={`/events/${eventUUID}/results/${eventResult.uuid}`}>View Results</Link>
+                    {intinerary?.length ? (
+                      <Link href={`/events/${eventUUID}/results/${intineraryEntry.uuid}`}>View Results</Link>
                     ) : (
                       <></>
                     )}

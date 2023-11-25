@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "lib/prisma";
-import { EVENT_PRISMA_SELECTOR, EVENT_AGGREGATED_RESULTS_ENTRY_PRISMA_SELECTOR } from "consts";
+import {
+  EVENT_PRISMA_SELECTOR,
+  EVENT_AGGREGATED_RESULTS_ENTRY_PRISMA_SELECTOR,
+  EVENT_ITINERARY_PRISMA_SELECTOR,
+} from "consts";
 
 const eventsUUIDRoute = async (req: NextApiRequest, resp: NextApiResponse) => {
   try {
@@ -29,10 +33,10 @@ export const getEventInfo = async (eventUUID: string) => {
     select: {
       ...EVENT_PRISMA_SELECTOR,
       aggregated_results: {
-        select: { ...EVENT_AGGREGATED_RESULTS_ENTRY_PRISMA_SELECTOR },
+        select: EVENT_AGGREGATED_RESULTS_ENTRY_PRISMA_SELECTOR,
         orderBy: [{ event_result_number: "desc" }, { time: "asc" }],
       },
-      results: { select: { uuid: true }, take: 1, orderBy: { event_result_number: "desc" } },
+      results: { select: EVENT_ITINERARY_PRISMA_SELECTOR, orderBy: { event_result_number: "asc" } },
     },
   });
 
@@ -43,7 +47,7 @@ export const getEventInfo = async (eventUUID: string) => {
       !aggregatedResult.retired && aggregatedResult.event_result_number === highestAggregateEventResultNumber
   );
   const retirements = aggregated_results.filter((aggregatedResult) => aggregatedResult.retired);
-  const lastResultUUID = results[0]?.uuid ?? "";
+  const lastResultUUID = (results.length > 0 && results[results.length - 1]?.uuid) ?? "";
 
   return {
     ...event,
@@ -51,6 +55,7 @@ export const getEventInfo = async (eventUUID: string) => {
     retirements,
     last_event_result_number: highestAggregateEventResultNumber,
     last_result_uuid: lastResultUUID,
+    itinerary: results,
   };
 };
 

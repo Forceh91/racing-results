@@ -26,6 +26,7 @@ export type EventItinerary = {
 
 export type ItineraryEntry = {
   uuid: string;
+  type: ResultType;
   event_result_number: number;
   leg: number;
   circuit: Circuit;
@@ -33,7 +34,8 @@ export type ItineraryEntry = {
 
 export type EventDetails = Event &
   EventAggregatedResults &
-  EventAggregatedResultRetirement & { last_event_result_number: number; last_result_uuid: string };
+  EventAggregatedResultRetirement &
+  EventItinerary & { last_event_result_number: number; last_result_uuid: string };
 
 export type _EventOverview = {
   uuid: string;

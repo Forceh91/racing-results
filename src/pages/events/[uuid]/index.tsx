@@ -58,8 +58,7 @@ export default function EventInfo() {
             <AggregateResultsTable results={sortedAggregateResults} retirements={event.retirements} />
           </>
         ) : (
-          // <EventResultsTable eventResults={event.results} eventUUID={event.uuid} />
-          <></>
+          <EventResultsTable intinerary={event.itinerary} eventUUID={event.uuid} />
         )}
       </Grid>
     </Grid>
