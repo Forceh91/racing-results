@@ -1,7 +1,6 @@
 import { Car } from "./car.types";
 import { Circuit } from "./circuit.types";
 import { Driver } from "./driver.types";
-import { _ResultEvent } from "./event.types";
 import { Penalty } from "./penalty.types";
 import { Team } from "./team.types";
 
@@ -13,7 +12,6 @@ export type Result = {
   fastest_lap?: ResultFastestLap;
   type: ResultType;
   event_result_number: number;
-  event: _ResultEvent;
 };
 
 export type ResultEntries = {
