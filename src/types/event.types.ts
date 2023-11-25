@@ -16,6 +16,10 @@ export type EventAggregatedResults = {
   aggregated_results: Array<AggregatedResultEntry>;
 };
 
+export type EventAggregatedResultRetirement = {
+  retirements: Array<AggregatedResultEntry>;
+};
+
 export type EventItinerary = {
   itinerary: Array<ItineraryEntry>;
 };
@@ -26,6 +30,10 @@ export type ItineraryEntry = {
   leg: number;
   circuit: Circuit;
 };
+
+export type EventDetails = Event &
+  EventAggregatedResults &
+  EventAggregatedResultRetirement & { last_event_result_number: number; last_result_uuid: string };
 
 export type _EventOverview = {
   uuid: string;

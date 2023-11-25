@@ -36,7 +36,6 @@ export default function EventInfo() {
     );
 
   const sortedAggregateResults = event.aggregated_results.length && sortAggregatedResults(event.aggregated_results);
-  const latestEventResult = (event.results && event.results[event.event_result_number - 1]) ?? false;
 
   return (
     <Grid container rowSpacing={3}>
@@ -44,7 +43,7 @@ export default function EventInfo() {
         <EventHeader
           event={event}
           hasAggregatedResults={event.aggregated_results.length > 0}
-          latestResultUUID={latestEventResult?.uuid}
+          latestResultUUID={event.last_result_uuid}
         />
 
         {/* if we've got aggregated results we should show them as priority rather than a list of results to click into */}
@@ -52,14 +51,15 @@ export default function EventInfo() {
           <>
             <Box sx={{ my: 1 }}>
               <Typography variant="h3" sx={{ marginTop: 2 }}>
-                Overall Standings (After Stage {event.event_result_number})
+                Overall Standings (After Stage {event.last_event_result_number})
               </Typography>
             </Box>
 
             <AggregateResultsTable results={sortedAggregateResults} retirements={event.retirements} />
           </>
         ) : (
-          <EventResultsTable eventResults={event.results} eventUUID={event.uuid} />
+          // <EventResultsTable eventResults={event.results} eventUUID={event.uuid} />
+          <></>
         )}
       </Grid>
     </Grid>

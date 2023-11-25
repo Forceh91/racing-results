@@ -2,10 +2,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button, { ButtonProps } from "@mui/material/Button";
 import Link from "next/link";
-import { EventOverview, _ResultEvent } from "types";
+import { Event, _ResultEvent } from "types";
 
 type EventHeaderProps = {
-  event: EventOverview | _ResultEvent;
+  event: Event | _ResultEvent;
   latestResultUUID: string | null;
   hasAggregatedResults: boolean;
 };

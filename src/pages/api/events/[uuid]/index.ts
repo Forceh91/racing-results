@@ -1,5 +1,6 @@
-import { prisma } from "lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "lib/prisma";
+import { EVENT_PRISMA_SELECTOR, EVENT_AGGREGATED_RESULTS_ENTRY_PRISMA_SELECTOR } from "consts";
 
 const eventsUUIDRoute = async (req: NextApiRequest, resp: NextApiResponse) => {
   try {
@@ -23,35 +24,15 @@ export const getEventInfo = async (eventUUID: string) => {
   if (!eventUUID?.length) throw "no uuid provided";
 
   // get event info from db
-  const { results, aggregated_results, ...rest } = await prisma.event.findUniqueOrThrow({
+  const { results, aggregated_results, ...event } = await prisma.event.findUniqueOrThrow({
     where: { uuid: eventUUID },
     select: {
-      uuid: true,
-      name: true,
-      start_date: true,
-      end_date: true,
-      results: {
-        select: {
-          id: false,
-          leg: true,
-          event_result_number: true,
-          type: true,
-          uuid: true,
-          circuit: { select: { name: true, length: true } },
-        },
-      },
+      ...EVENT_PRISMA_SELECTOR,
       aggregated_results: {
-        select: {
-          id: false,
-          driver: { select: { name: true, nationality: true } },
-          car: true,
-          time: true,
-          event_result_number: true,
-          retired: true,
-          retired_reason: true,
-        },
+        select: { ...EVENT_AGGREGATED_RESULTS_ENTRY_PRISMA_SELECTOR },
         orderBy: [{ event_result_number: "desc" }, { time: "asc" }],
       },
+      results: { select: { uuid: true }, take: 1, orderBy: { event_result_number: "desc" } },
     },
   });
 
@@ -62,13 +43,14 @@ export const getEventInfo = async (eventUUID: string) => {
       !aggregatedResult.retired && aggregatedResult.event_result_number === highestAggregateEventResultNumber
   );
   const retirements = aggregated_results.filter((aggregatedResult) => aggregatedResult.retired);
+  const lastResultUUID = results[0]?.uuid ?? "";
 
   return {
-    ...rest,
-    results,
+    ...event,
     aggregated_results: running,
     retirements,
-    event_result_number: highestAggregateEventResultNumber,
+    last_event_result_number: highestAggregateEventResultNumber,
+    last_result_uuid: lastResultUUID,
   };
 };
 
