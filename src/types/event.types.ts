@@ -1,5 +1,12 @@
 import { Circuit } from "./circuit.types";
-import { AggregatedResultEntry, ResultType } from "./result.types";
+import {
+  AggregatedResultEntry,
+  Result,
+  ResultAggregateResults,
+  ResultEntries,
+  ResultPenalties,
+  ResultType,
+} from "./result.types";
 
 export type Event = {
   uuid: string;
@@ -42,6 +49,14 @@ export type EventItineraryDetailed = EventItinerary & {
   has_aggregated_results: boolean;
   latest_result_uuid: string | null;
 };
+
+export type EventResult = {
+  event: Event;
+} & Result &
+  EventItinerary &
+  ResultEntries &
+  ResultAggregateResults &
+  ResultPenalties;
 
 export type _EventOverview = {
   uuid: string;

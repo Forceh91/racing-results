@@ -34,13 +34,17 @@ export const StageList = (props: StageListProps) => {
         .map((stage, ix, _stages) => (
           <>
             {_stages[ix - 1]?.leg !== stage.leg ? (
-              <Box sx={{ ...boxSx, background: "#ccc", borderColor: "#999" }}>
+              <Box sx={{ ...boxSx, background: "#ccc", borderColor: "#999" }} key={`${stage.uuid}-leg-identifier`}>
                 <Typography>Leg {stage.leg}</Typography>
               </Box>
             ) : (
               <></>
             )}
-            <Link href={`/events/${eventUUID}/results/${stage.uuid}`} style={{ textDecoration: "none" }}>
+            <Link
+              href={`/events/${eventUUID}/results/${stage.uuid}`}
+              style={{ textDecoration: "none" }}
+              key={stage.uuid}
+            >
               <Box
                 key={stage.uuid}
                 sx={{

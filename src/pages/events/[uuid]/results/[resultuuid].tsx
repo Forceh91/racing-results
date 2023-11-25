@@ -2,8 +2,6 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Link from "next/link";
-import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -23,7 +21,7 @@ import { EventHeader } from "components/events";
 
 export default function ResultPage() {
   const router = useRouter();
-  const { data: result, error, isLoading, isSuccess } = useEventResult(router.query.resultuuid as string);
+  const { data, error, isLoading, isSuccess } = useEventResult(router.query.resultuuid as string);
 
   if (isLoading || !router.query.uuid)
     return (
@@ -47,8 +45,18 @@ export default function ResultPage() {
       </Grid>
     );
 
-  const { uuid, event, event_result_number, circuit, results, fastest_lap, type, aggregate_results, penalty } =
-    result ?? {};
+  const {
+    uuid,
+    event,
+    event_result_number,
+    circuit,
+    results,
+    fastest_lap,
+    type,
+    aggregated_results,
+    penalties,
+    itinerary,
+  } = data;
   const isRally = type === ResultType.RALLY;
 
   return (
@@ -57,12 +65,12 @@ export default function ResultPage() {
         <Box sx={{ marginBottom: 2 }}>
           <EventHeader
             event={event}
-            hasAggregatedResults={(aggregate_results && aggregate_results.length > 0) ?? false}
+            hasAggregatedResults={(aggregated_results && aggregated_results.length > 0) ?? false}
             latestResultUUID={uuid}
           />
 
-          {isRally && event.results.length ? (
-            <StageList eventUUID={event.uuid} stages={event.results} currentStage={event_result_number} />
+          {isRally && itinerary.length ? (
+            <StageList eventUUID={event.uuid} stages={itinerary} currentStage={event_result_number} />
           ) : (
             <></>
           )}
@@ -87,10 +95,10 @@ export default function ResultPage() {
                   <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>{isRally ? "Stage" : ""} Results</Typography>
                   <ResultsTable results={results} resultType={type} />
                 </Box>
-                {aggregate_results?.length ? (
+                {aggregated_results?.length ? (
                   <Box sx={{ marginLeft: 4, width: "100%" }}>
                     <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>Overall Results</Typography>
-                    <AggregateResultsTable results={aggregate_results} />
+                    <AggregateResultsTable results={aggregated_results} />
                   </Box>
                 ) : (
                   <></>
@@ -100,7 +108,7 @@ export default function ResultPage() {
               <></>
             )}
 
-            {penalty?.length ? (
+            {penalties?.length ? (
               <Box sx={{ my: 2 }}>
                 <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>Penalties</Typography>
                 <TableContainer sx={{ marginTop: 2 }}>
@@ -113,7 +121,7 @@ export default function ResultPage() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {penalty.map((penalty) => (
+                      {penalties.map((penalty) => (
                         <StyledTableRow key={penalty.driver.uuid}>
                           <PenaltyEntry {...penalty} as={TableCell} />
                         </StyledTableRow>

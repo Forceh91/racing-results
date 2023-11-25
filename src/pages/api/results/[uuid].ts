@@ -1,5 +1,12 @@
-import { prisma } from "lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "lib/prisma";
+import {
+  EVENT_PRISMA_SELECTOR,
+  CIRCUIT_PRISMA_SELECTOR,
+  DRIVER_PRISMA_SELECTOR,
+  TEAM_PRISMA_SELECTOR,
+  EVENT_ITINERARY_LIGHT_PRISMA_SELECTOR,
+} from "consts";
 
 const eventResultUUIDRoute = async (req: NextApiRequest, resp: NextApiResponse) => {
   try {
@@ -23,19 +30,18 @@ export const getResult = async (uuid: string) => {
   if (!uuid?.length) throw "no uuid provided";
 
   // get event info from db
-  const result = await prisma.eventResult.findUniqueOrThrow({
+  const { event, results, penalty, ...result } = await prisma.eventResult.findUniqueOrThrow({
     where: { uuid },
     select: {
-      id: false,
       uuid: true,
       type: true,
       event_result_number: true,
-      circuit: { select: { uuid: true, name: true, length: true } },
+      circuit: { select: CIRCUIT_PRISMA_SELECTOR },
       results: {
         select: {
           uuid: true,
-          driver: { select: { name: true, nationality: true } },
-          team: { select: { name: true } },
+          driver: { select: DRIVER_PRISMA_SELECTOR },
+          team: { select: TEAM_PRISMA_SELECTOR },
           car: true,
           finished: true,
           grid: true,
@@ -44,10 +50,13 @@ export const getResult = async (uuid: string) => {
         },
       },
       event: {
-        select: { uuid: true, name: true, results: { select: { uuid: true, event_result_number: true, leg: true } } },
+        select: {
+          ...EVENT_PRISMA_SELECTOR,
+          results: { select: EVENT_ITINERARY_LIGHT_PRISMA_SELECTOR, orderBy: { event_result_number: "asc" } },
+        },
       },
       penalty: {
-        select: { driver: { select: { name: true, nationality: true, uuid: true } }, time: true, reason: true },
+        select: { driver: { select: DRIVER_PRISMA_SELECTOR }, time: true, reason: true },
       },
     },
   });
@@ -55,7 +64,7 @@ export const getResult = async (uuid: string) => {
   // get the aggregate results for this event at this results point in time
   const aggregateResultForEvent = await prisma.aggreatedResultEntry.findMany({
     where: {
-      event_uuid: result.event.uuid,
+      event_uuid: event.uuid,
       event_result_number: result.event_result_number,
       retired: { equals: null },
     },
@@ -69,7 +78,16 @@ export const getResult = async (uuid: string) => {
     orderBy: [{ time: "asc" }],
   });
 
-  return { ...result, aggregate_results: aggregateResultForEvent };
+  const { results: itinerary, ...eventDetails } = event;
+
+  return {
+    ...result,
+    event: eventDetails,
+    results,
+    aggregated_results: aggregateResultForEvent,
+    penalties: penalty,
+    itinerary,
+  };
 };
 
 export default eventResultUUIDRoute;

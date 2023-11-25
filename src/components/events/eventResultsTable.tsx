@@ -34,7 +34,7 @@ export const EventResultsTable = (props: EventResultsTableProps) => {
             intinerary.map((itineraryEntry, ix) => (
               <>
                 {isRally && intinerary[ix - 1]?.leg !== itineraryEntry.leg ? (
-                  <TableRow>
+                  <TableRow key={`${itineraryEntry.uuid}-leg-identifier`}>
                     <TableCell colSpan={4} sx={{ fontWeight: 700 }}>
                       Leg {itineraryEntry.leg}
                     </TableCell>

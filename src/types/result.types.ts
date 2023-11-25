@@ -11,12 +11,21 @@ export type Result = {
   ranked: boolean; // whether elo was calculated (x players needed)
   circuit: Circuit;
   fastest_lap?: ResultFastestLap;
-  results: ResultEntry[];
   type: ResultType;
   event_result_number: number;
   event: _ResultEvent;
-  aggregate_results?: AggregatedResultEntry[];
-  penalty?: Penalty[];
+};
+
+export type ResultEntries = {
+  results: ResultEntry[];
+};
+
+export type ResultAggregateResults = {
+  aggregated_results: AggregatedResultEntry[];
+};
+
+export type ResultPenalties = {
+  penalties: Penalty[];
 };
 
 export type Results = Result[];
