@@ -5,7 +5,7 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Link from "next/link";
-import { _EventResultIdentifiers, EventItinerary, ItineraryEntry, ResultType } from "types";
+import { ItineraryEntry, ResultType } from "types";
 import StyledTableRow, { numericColumn, sxBoldTableHeaders } from "lib/table";
 import { convertLengthToKM } from "lib/circuit";
 

@@ -1,13 +1,13 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-import { _ResultEventItinerary } from "types";
 import { SxProps } from "@mui/material";
 import Link from "next/link";
+import { ItineraryEntry } from "types";
 
 type StageListProps = {
   eventUUID: string;
-  stages: _ResultEventItinerary[];
+  stages: ItineraryEntry[];
   currentStage: number;
 };
 
