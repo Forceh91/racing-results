@@ -3,15 +3,13 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import { EventHeader, EventResultsTable } from "components/events";
 import { useRouter } from "next/router";
-import { useEvent, useEventItinerary } from "hooks";
+import { useEventItinerary } from "hooks";
 
 export const EventItinerary = () => {
   const router = useRouter();
-  const eventUUID = router.query.uuid as string;
-  const { data: eventItinerary, error, isLoading, isSuccess } = useEventItinerary(eventUUID);
-  const { data: event } = useEvent(eventUUID);
+  const { data, error, isLoading, isSuccess } = useEventItinerary(router.query.uuid as string);
 
-  if (isLoading || !eventUUID)
+  if (isLoading)
     return (
       <Grid container rowSpacing={3}>
         <Grid item xs={12}>
@@ -37,14 +35,14 @@ export const EventItinerary = () => {
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
         <EventHeader
-          event={eventItinerary}
-          hasAggregatedResults={(event?.aggregated_results && event.aggregated_results.length > 0) ?? false}
-          latestResultUUID={(event?.results && event.results[event.event_result_number - 1]?.uuid) ?? ""}
+          event={data.event}
+          hasAggregatedResults={data.has_aggregated_results}
+          latestResultUUID={data.latest_result_uuid}
         />
         <Typography variant="h2" sx={{ fontWeight: 400 }}>
           Itinerary
         </Typography>
-        <EventResultsTable eventResults={eventItinerary.results} eventUUID={eventItinerary.uuid} />
+        <EventResultsTable itinerary={data.itinerary} eventUUID={data.event.uuid} />
       </Grid>
     </Grid>
   );

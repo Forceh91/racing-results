@@ -11,11 +11,11 @@ import { convertLengthToKM } from "lib/circuit";
 
 type EventResultsTableProps = {
   eventUUID: string;
-  intinerary: ItineraryEntry[];
+  itinerary: ItineraryEntry[];
 };
 
 export const EventResultsTable = (props: EventResultsTableProps) => {
-  const { eventUUID, intinerary } = props;
+  const { eventUUID, itinerary: intinerary } = props;
   const isRally = intinerary.some((eventResult) => eventResult.type === ResultType.RALLY);
 
   return (
@@ -31,26 +31,26 @@ export const EventResultsTable = (props: EventResultsTableProps) => {
         </TableHead>
         <TableBody>
           {intinerary.length ? (
-            intinerary.map((intineraryEntry, ix) => (
+            intinerary.map((itineraryEntry, ix) => (
               <>
-                {isRally && intinerary[ix - 1]?.leg !== intineraryEntry.leg ? (
+                {isRally && intinerary[ix - 1]?.leg !== itineraryEntry.leg ? (
                   <TableRow>
                     <TableCell colSpan={4} sx={{ fontWeight: 700 }}>
-                      Leg {intineraryEntry.leg}
+                      Leg {itineraryEntry.leg}
                     </TableCell>
                   </TableRow>
                 ) : (
                   <></>
                 )}
-                <StyledTableRow key={intineraryEntry.uuid}>
-                  <TableCell>{intineraryEntry.event_result_number}</TableCell>
-                  <TableCell>{intineraryEntry.circuit.name}</TableCell>
+                <StyledTableRow key={itineraryEntry.uuid}>
+                  <TableCell>{itineraryEntry.event_result_number}</TableCell>
+                  <TableCell>{itineraryEntry.circuit.name}</TableCell>
                   <TableCell sx={numericColumn}>
-                    {intineraryEntry.circuit.length ? `${convertLengthToKM(intineraryEntry.circuit.length)} km` : "-"}
+                    {itineraryEntry.circuit.length ? `${convertLengthToKM(itineraryEntry.circuit.length)} km` : "-"}
                   </TableCell>
                   <TableCell>
                     {intinerary?.length ? (
-                      <Link href={`/events/${eventUUID}/results/${intineraryEntry.uuid}`}>View Results</Link>
+                      <Link href={`/events/${eventUUID}/results/${itineraryEntry.uuid}`}>View Results</Link>
                     ) : (
                       <></>
                     )}

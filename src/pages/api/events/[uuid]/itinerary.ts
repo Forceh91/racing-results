@@ -1,3 +1,4 @@
+import { EVENT_PRISMA_SELECTOR, EVENT_ITINERARY_PRISMA_SELECTOR } from "consts";
 import { prisma } from "lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -22,24 +23,21 @@ const eventsUUIDItineraryRouteGET = async (req: NextApiRequest, resp: NextApiRes
 export const getEventItinerary = async (eventUUID: string) => {
   if (!eventUUID?.length) throw "no uuid provided";
 
-  // get event info from db
-  return await prisma.event.findUniqueOrThrow({
+  const { aggregated_results, results, ...event } = await prisma.event.findUniqueOrThrow({
     where: { uuid: eventUUID },
     select: {
-      uuid: true,
-      name: true,
-      results: {
-        select: {
-          id: false,
-          leg: true,
-          event_result_number: true,
-          type: true,
-          uuid: true,
-          circuit: { select: { name: true, length: true } },
-        },
-      },
+      ...EVENT_PRISMA_SELECTOR,
+      results: { select: EVENT_ITINERARY_PRISMA_SELECTOR, orderBy: { event_result_number: "asc" } },
+      aggregated_results: { take: 1 },
     },
   });
+
+  return {
+    event,
+    itinerary: results,
+    has_aggregated_results: aggregated_results.length > 0,
+    latest_result_uuid: results && results[results.length - 1]?.uuid,
+  };
 };
 
 export default eventsUUIDItineraryRoute;

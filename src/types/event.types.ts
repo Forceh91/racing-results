@@ -37,6 +37,12 @@ export type EventDetails = Event &
   EventAggregatedResultRetirement &
   EventItinerary & { last_event_result_number: number; last_result_uuid: string };
 
+export type EventItineraryDetailed = EventItinerary & {
+  event: Event;
+  has_aggregated_results: boolean;
+  latest_result_uuid: string | null;
+};
+
 export type _EventOverview = {
   uuid: string;
   name: string;
