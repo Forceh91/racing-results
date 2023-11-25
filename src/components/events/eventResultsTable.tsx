@@ -5,13 +5,13 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import Link from "next/link";
-import { EventResultIdentifiers, ResultType } from "types";
+import { _EventResultIdentifiers, ResultType } from "types";
 import StyledTableRow, { numericColumn, sxBoldTableHeaders } from "lib/table";
 import { convertLengthToKM } from "lib/circuit";
 
 type EventResultsTableProps = {
   eventUUID: string;
-  eventResults: EventResultIdentifiers;
+  eventResults: _EventResultIdentifiers;
 };
 
 export const EventResultsTable = (props: EventResultsTableProps) => {

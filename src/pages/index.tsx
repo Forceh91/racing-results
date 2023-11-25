@@ -58,7 +58,7 @@ export default function Home() {
                     <TableCell>{format(parseISO(event.start_date), DEFAULT_DATE_FORMAT)}</TableCell>
                     <TableCell>{event.name}</TableCell>
                     <TableCell>
-                      <Link href={`/events/${event.uuid}/`}>View Event</Link>
+                      {event.has_itinerary ? <Link href={`/events/${event.uuid}/`}>View Event</Link> : <></>}
                     </TableCell>
                   </StyledTableRow>
                 ))}

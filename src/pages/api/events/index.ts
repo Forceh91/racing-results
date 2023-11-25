@@ -1,5 +1,6 @@
-import { prisma } from "lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "lib/prisma";
+import { EVENT_PRISMA_SELECTOR } from "consts";
 
 const eventsRoute = async (req: NextApiRequest, resp: NextApiResponse) => {
   try {
@@ -19,20 +20,16 @@ const eventsRouteGET = async (req: NextApiRequest, resp: NextApiResponse) => {
 };
 
 export const getRecentEvents = async () => {
-  // get event info from db
-  return await prisma.event.findMany({
-    select: {
-      id: false,
-      uuid: true,
-      name: true,
-      start_date: true,
-      end_date: true,
-      results: { take: 1 },
-    },
+  // get 20 most recent events from the db
+  const events = await prisma.event.findMany({
+    select: { ...EVENT_PRISMA_SELECTOR, results: { take: 1 } },
     take: 20,
-    orderBy: {
-      start_date: "desc",
-    },
+    orderBy: { start_date: "desc" },
+  });
+
+  return events.map((event) => {
+    const { results, ...rest } = event;
+    return { has_itinerary: !!results, ...rest };
   });
 };
 
