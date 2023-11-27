@@ -14,7 +14,7 @@ type EventResultsTableProps = {
   itinerary: ItineraryEntry[];
 };
 
-export const EventResultsTable = (props: EventResultsTableProps) => {
+export const ItineraryTable = (props: EventResultsTableProps) => {
   const { eventUUID, itinerary: intinerary } = props;
   const isRally = intinerary.some((eventResult) => eventResult.type === ResultType.RALLY);
 

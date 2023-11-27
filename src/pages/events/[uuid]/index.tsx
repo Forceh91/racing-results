@@ -6,7 +6,7 @@ import { useEvent } from "hooks/useEvents";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
 import { AggregateResultsTable } from "components/results";
-import { EventResultsTable } from "components/events";
+import { ItineraryTable } from "components/events";
 import { EventHeader } from "components/events";
 
 export default function EventInfo() {
@@ -58,7 +58,7 @@ export default function EventInfo() {
             <AggregateResultsTable results={sortedAggregateResults} retirements={event.retirements} />
           </>
         ) : (
-          <EventResultsTable itinerary={event.itinerary} eventUUID={event.uuid} />
+          <ItineraryTable itinerary={event.itinerary} eventUUID={event.uuid} />
         )}
       </Grid>
     </Grid>

@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
-import { EventHeader, EventResultsTable } from "components/events";
+import { EventHeader, ItineraryTable } from "components/events";
 import { useRouter } from "next/router";
 import { useEventItinerary } from "hooks";
 
@@ -42,7 +42,7 @@ export const EventItinerary = () => {
         <Typography variant="h2" sx={{ fontWeight: 400 }}>
           Itinerary
         </Typography>
-        <EventResultsTable itinerary={data.itinerary} eventUUID={data.event.uuid} />
+        <ItineraryTable itinerary={data.itinerary} eventUUID={data.event.uuid} />
       </Grid>
     </Grid>
   );

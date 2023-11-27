@@ -1,2 +1,2 @@
-export * from "./eventResultsTable";
+export * from "./itineraryTable";
 export * from "./header";
