@@ -60,7 +60,7 @@ export const EventResultsTable = (props: EventResultsTableProps) => {
             ))
           ) : (
             <StyledTableRow>
-              <TableCell colSpan={3}>No results are available for this event yet</TableCell>
+              <TableCell colSpan={4}>No itinerary is available for this event yet</TableCell>
             </StyledTableRow>
           )}
         </TableBody>
