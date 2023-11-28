@@ -47,7 +47,7 @@ export const getEventInfo = async (eventUUID: string) => {
       !aggregatedResult.retired && aggregatedResult.event_result_number === highestAggregateEventResultNumber
   );
   const retirements = aggregated_results.filter((aggregatedResult) => aggregatedResult.retired);
-  const lastResultUUID = (results.length > 0 && results[results.length - 1]?.uuid) ?? "";
+  const lastResultUUID = (results.length > 0 && results[highestAggregateEventResultNumber - 1]?.uuid) ?? "";
 
   return {
     ...event,
