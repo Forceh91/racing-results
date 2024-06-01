@@ -40,6 +40,7 @@ model Event {
   id                 Int                    @id @default(autoincrement())
   uuid               String                 @unique @default(uuid())
   name               String
+  country            String?
   start_date         DateTime               @default(now())
   end_date           DateTime?
   results            EventResult[]
