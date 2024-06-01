@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
+import { TextWithNationalityFlagSuffix } from "components/ui";
 import { AggregatedResultEntry } from "types";
-import Flags from "country-flag-icons/react/3x2";
 
 type RetirementEntryProps = {
   as?: React.ElementType;
@@ -18,23 +18,16 @@ export default function RetirementEntry(props: RetirementEntryProps) {
     event_result_number,
   } = props ?? {};
 
-  const Nationality = () => {
-    if (!nationality?.length) return <></>;
-    // TODO: fix this error
-    const FlagComponent = Flags[nationality];
-    return <FlagComponent />;
-  };
-
   return (
     <>
       <Component>
         {isRally ? "Stage " : ""}
         {event_result_number}
       </Component>
-      <Component sx={{ fontWeight: 700, svg: { height: "1em", mr: 1 } }}>
+      <Component sx={{ fontWeight: 700 }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          {nationality && <Nationality />}
-          {name}
+          {nationality && <TextWithNationalityFlagSuffix nationality={nationality} text={name} />}
+          {!nationality && <>{name}</>}
         </Box>
       </Component>
       <Component>

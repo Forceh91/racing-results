@@ -11,6 +11,7 @@ import {
 export type Event = {
   uuid: string;
   name: string;
+  country?: string;
   start_date: string;
   end_date?: string;
 };

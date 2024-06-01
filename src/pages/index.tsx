@@ -1,15 +1,16 @@
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
-import Link from "next/link";
-import { useEventsOverview } from "hooks/useEventsOverview";
+import Grid from "@mui/material/Grid";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import Typography from "@mui/material/Typography";
+import { TextWithNationalityFlagSuffix } from "components/ui";
 import { format, parseISO } from "date-fns";
+import { useEventsOverview } from "hooks/useEventsOverview";
+import Link from "next/link";
 import { DEFAULT_DATE_FORMAT } from "../consts";
 import StyledTableRow, { sxBoldTableHeaders } from "../lib/table";
 
@@ -56,7 +57,10 @@ export default function Home() {
                 {data.map((event) => (
                   <StyledTableRow key={event.uuid}>
                     <TableCell>{format(parseISO(event.start_date), DEFAULT_DATE_FORMAT)}</TableCell>
-                    <TableCell>{event.name}</TableCell>
+                    <TableCell sx={{ fontWeight: 700 }}>
+                      {event.country && <TextWithNationalityFlagSuffix nationality={event.country} text={event.name} />}
+                      {!event.country && <>{event.name}</>}
+                    </TableCell>
                     <TableCell>
                       {event.has_itinerary ? <Link href={`/events/${event.uuid}/`}>View Event</Link> : <></>}
                     </TableCell>

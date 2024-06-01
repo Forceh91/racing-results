@@ -1,7 +1,7 @@
 import { DRIVER_PRISMA_SELECTOR } from "./driver.consts";
 import { CIRCUIT_PRISMA_SELECTOR } from "./circuit.consts";
 
-export const EVENT_PRISMA_SELECTOR = { uuid: true, name: true, start_date: true, end_date: true };
+export const EVENT_PRISMA_SELECTOR = { uuid: true, name: true, country: true, start_date: true, end_date: true };
 export const EVENT_AGGREGATED_RESULTS_ENTRY_PRISMA_SELECTOR = {
   driver: { select: { ...DRIVER_PRISMA_SELECTOR } },
   car: true,
