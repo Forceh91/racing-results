@@ -17,6 +17,12 @@ import StyledTableRow, { sxBoldTableHeaders } from "../lib/table";
 export default function Home() {
   const { data, error, isLoading, isSuccess } = useEventsOverview();
 
+  const formatDateRange = (startDate: string, endDate?: string) => {
+    if (!endDate) return format(parseISO(startDate), DEFAULT_DATE_FORMAT);
+    else
+      return `${format(parseISO(startDate), DEFAULT_DATE_FORMAT)} - ${format(parseISO(endDate), DEFAULT_DATE_FORMAT)}`;
+  };
+
   return (
     <Grid container rowSpacing={3}>
       <Grid item xs={12}>
@@ -40,7 +46,10 @@ export default function Home() {
 
         {isSuccess && (
           <TableContainer sx={{ marginTop: 2 }}>
-            <Table stickyHeader>
+            <Table stickyHeader sx={{ tableLayout: "fixed" }}>
+              <colgroup>
+                <col width="275px" />
+              </colgroup>
               <TableHead sx={sxBoldTableHeaders}>
                 <StyledTableRow>
                   <TableCell>Event Date</TableCell>
@@ -56,12 +65,12 @@ export default function Home() {
                 )}
                 {data.map((event) => (
                   <StyledTableRow key={event.uuid}>
-                    <TableCell>{format(parseISO(event.start_date), DEFAULT_DATE_FORMAT)}</TableCell>
+                    <TableCell>{formatDateRange(event.start_date, event.end_date)}</TableCell>
                     <TableCell sx={{ fontWeight: 700 }}>
                       {event.country && <TextWithNationalityFlagSuffix nationality={event.country} text={event.name} />}
                       {!event.country && <>{event.name}</>}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{ textAlign: "right" }}>
                       {event.has_itinerary ? <Link href={`/events/${event.uuid}/`}>View Event</Link> : <></>}
                     </TableCell>
                   </StyledTableRow>
