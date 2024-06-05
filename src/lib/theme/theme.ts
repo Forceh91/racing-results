@@ -1,12 +1,14 @@
 import { createTheme } from "@mui/material";
 
-import { Inter } from "@next/font/google";
+// import { Inter } from "@next/font/google";
+// const inter = Inter({ subsets: ["latin"] });
 
-const inter = Inter({ subsets: ["latin"] });
+import { Manrope } from "@next/font/google";
+const font = Manrope({ subsets: ["latin"] });
 
 export const theme = createTheme({
   typography: {
-    fontFamily: inter.style.fontFamily,
+    fontFamily: font.style.fontFamily,
     body1: { fontSize: "1.6rem" },
     body2: { fontSize: "1.6rem" },
     h1: { fontSize: "3.4rem" },

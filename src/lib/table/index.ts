@@ -15,6 +15,6 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default StyledTableRow;
 
-export const sxSubData: SxProps = { fontSize: ".91em", color: "gray" };
+export const sxSubData: SxProps = { fontSize: ".85em", color: "gray" };
 
 export const sxBoldTableHeaders: SxProps = { th: { fontWeight: "bold" } };
