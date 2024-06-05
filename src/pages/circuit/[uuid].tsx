@@ -6,7 +6,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import Link from "next/link";
 import { format, parseISO } from "date-fns";
 import { CircuitResult, CircuitStats } from "types";
 import mockCircuitStats from "mocks/mockCircuitStats.json";

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import Link from "next/link";
 import { format, parseISO } from "date-fns";
 import { Circuit, ResultFastestLap } from "types";
 import { convertMillsecondsToString } from "lib/time";

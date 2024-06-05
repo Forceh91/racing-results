@@ -1,4 +1,4 @@
-import { Link } from "@mui/material";
+import Link from "next/link";
 import Box from "@mui/material/Box";
 import { format, parseISO } from "date-fns";
 import { convertMillsecondsToString } from "lib/time";
