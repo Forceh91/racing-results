@@ -3,11 +3,11 @@ import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import { EventHeader, ItineraryTable } from "components/events";
 import { useRouter } from "next/router";
-import { useEventItinerary } from "hooks";
+import { useEventItineraryQuery } from "hooks";
 
 export const EventItinerary = () => {
   const router = useRouter();
-  const { data, error, isLoading, isSuccess } = useEventItinerary(router.query.uuid as string);
+  const { data, error, isLoading, isSuccess } = useEventItineraryQuery(router.query.uuid as string);
 
   if (isLoading)
     return (

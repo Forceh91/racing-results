@@ -1,17 +1,16 @@
-import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { useEvent } from "hooks/useEvents";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { EventHeader, ItineraryTable } from "components/events";
+import { AggregateResultsTable } from "components/results";
+import { useEventQuery } from "hooks/useEvents";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
-import { AggregateResultsTable } from "components/results";
-import { ItineraryTable } from "components/events";
-import { EventHeader } from "components/events";
 
 export default function EventInfo() {
   const router = useRouter();
-  const { data: event, error, isLoading, isSuccess } = useEvent(router.query.uuid as string);
+  const { data: event, error, isLoading, isSuccess } = useEventQuery(router.query.uuid as string);
 
   if (isLoading || !router.query.uuid)
     return (

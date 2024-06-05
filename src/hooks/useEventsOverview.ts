@@ -1,13 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "lib/axios";
-import { EventOverview } from "types";
+import { DEFAULT_STALE_TIME } from "consts";
+import queryKeys from "queryKeys";
 
-export const useEventsOverview = () => {
-  return useQuery({
-    queryKey: ["eventOverview"],
-    queryFn: async () => {
-      const { data } = await axios.get<EventOverview[]>("/events");
-      return data;
-    },
-  });
-};
+export const useEventsOverviewQuery = () => useQuery({ ...queryKeys.events.all, staleTime: DEFAULT_STALE_TIME });

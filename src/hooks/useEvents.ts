@@ -1,14 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "lib/axios";
-import { EventDetails } from "types";
+import { DEFAULT_STALE_TIME } from "consts";
+import queryKeys from "queryKeys";
 
-export const useEvent = (uuid: string) => {
-  return useQuery({
-    queryKey: ["event", uuid],
-    queryFn: async () => {
-      const { data } = await axios.get<EventDetails>(`/events/${uuid ?? ""}`);
-      return data;
-    },
-    enabled: !!uuid,
-  });
-};
+export const useEventQuery = (uuid: string) =>
+  useQuery({ ...queryKeys.events.detail(uuid), staleTime: DEFAULT_STALE_TIME, enabled: !!uuid });

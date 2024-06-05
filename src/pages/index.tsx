@@ -9,13 +9,13 @@ import TableHead from "@mui/material/TableHead";
 import Typography from "@mui/material/Typography";
 import { TextWithNationalityFlagSuffix } from "components/ui";
 import { format, parseISO } from "date-fns";
-import { useEventsOverview } from "hooks/useEventsOverview";
+import { useEventsOverviewQuery } from "hooks/useEventsOverview";
 import Link from "next/link";
 import { DEFAULT_DATE_FORMAT } from "../consts";
 import StyledTableRow, { sxBoldTableHeaders } from "../lib/table";
 
 export default function Home() {
-  const { data, error, isLoading, isSuccess } = useEventsOverview();
+  const { data, error, isLoading, isSuccess } = useEventsOverviewQuery();
 
   const formatDateRange = (startDate: string, endDate?: string) => {
     if (!endDate) return format(parseISO(startDate), DEFAULT_DATE_FORMAT);

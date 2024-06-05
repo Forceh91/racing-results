@@ -1,14 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "lib/axios";
-import { EventItineraryDetailed } from "types";
+import { DEFAULT_STALE_TIME } from "consts";
+import queryKeys from "queryKeys";
 
-export const useEventItinerary = (uuid: string) => {
-  return useQuery({
-    queryKey: ["eventItinerary", uuid],
-    queryFn: async () => {
-      const { data } = await axios.get<EventItineraryDetailed>(`/events/${uuid}/itinerary`);
-      return data;
-    },
-    enabled: !!uuid,
-  });
-};
+export const useEventItineraryQuery = (uuid: string) =>
+  useQuery({ ...queryKeys.events.itinerary(uuid), staleTime: DEFAULT_STALE_TIME, enabled: !!uuid });

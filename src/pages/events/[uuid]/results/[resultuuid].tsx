@@ -1,27 +1,26 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
+import Typography from "@mui/material/Typography";
 
-import { ResultType } from "types";
+import { EventHeader } from "components/events";
+import PenaltyEntry from "components/penalty";
+import { AggregateResultsTable, ResultsTable, StageList } from "components/results";
+import { useEventResultQuery } from "hooks";
+import { convertLengthToKM } from "lib/circuit";
 import { numericColumn, StyledTableRow, sxBoldTableHeaders } from "lib/table";
 import { useRouter } from "next/router";
-import { useEventResult } from "hooks";
-import { convertLengthToKM } from "lib/circuit";
-import PenaltyEntry from "components/penalty";
-import { ResultsTable, StageList } from "components/results";
-import { AggregateResultsTable } from "components/results";
-import { EventHeader } from "components/events";
+import { ResultType } from "types";
 
 export default function ResultPage() {
   const router = useRouter();
-  const { data, error, isLoading, isSuccess } = useEventResult(router.query.resultuuid as string);
+  const { data, error, isLoading, isSuccess } = useEventResultQuery(router.query.resultuuid as string);
 
   if (isLoading || !router.query.uuid)
     return (
