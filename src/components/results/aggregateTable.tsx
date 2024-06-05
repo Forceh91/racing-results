@@ -25,6 +25,9 @@ export const AggregateResultsTable = (props: AggregateResultsTableProps) => {
     <>
       <TableContainer sx={{ marginTop: 2 }}>
         <Table stickyHeader>
+          <colgroup>
+            <col width="65px" />
+          </colgroup>
           <TableHead sx={sxBoldTableHeaders}>
             <TableRow>
               <TableCell sx={numericColumn}>Pos</TableCell>
