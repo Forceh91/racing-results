@@ -46,7 +46,7 @@ export default function Home() {
 
         {isSuccess && (
           <TableContainer sx={{ marginTop: 2 }}>
-            <Table stickyHeader sx={{ tableLayout: "fixed" }}>
+            <Table stickyHeader>
               <colgroup>
                 <col width="275px" />
               </colgroup>

@@ -27,7 +27,9 @@ export const StageList = (props: StageListProps) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
       <Box sx={{ ...boxSx, borderColor: "#999", borderLeft: 1 }}>
-        <Typography sx={{ fontWeight: 600 }}>Stage</Typography>
+        <Typography sx={{ fontWeight: 600 }} noWrap>
+          Stage
+        </Typography>
       </Box>
       {stages
         .sort((a, b) => a.event_result_number - b.event_result_number)
@@ -35,7 +37,7 @@ export const StageList = (props: StageListProps) => {
           <>
             {_stages[ix - 1]?.leg !== stage.leg ? (
               <Box sx={{ ...boxSx, background: "#ccc", borderColor: "#999" }} key={`${stage.uuid}-leg-identifier`}>
-                <Typography>Leg {stage.leg}</Typography>
+                <Typography noWrap>Leg {stage.leg}</Typography>
               </Box>
             ) : (
               <></>

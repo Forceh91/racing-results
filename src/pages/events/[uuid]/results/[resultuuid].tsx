@@ -90,20 +90,20 @@ export default function ResultPage() {
             )}
 
             {results.length ? (
-              <Box sx={{ my: 2, display: "flex" }}>
-                <Box sx={{ width: "100%" }}>
+              <Grid container sx={{ my: 2 }} columnSpacing={8} rowGap={4}>
+                <Grid item xs={12} md={6}>
                   <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>{isRally ? "Stage" : ""} Results</Typography>
                   <ResultsTable results={results} resultType={type} />
-                </Box>
+                </Grid>
                 {aggregated_results?.length ? (
-                  <Box sx={{ marginLeft: 4, width: "100%" }}>
+                  <Grid item xs={12} md={6}>
                     <Typography sx={{ marginBottom: 2, fontWeight: 700 }}>Overall Results</Typography>
                     <AggregateResultsTable results={aggregated_results} />
-                  </Box>
+                  </Grid>
                 ) : (
                   <></>
                 )}
-              </Box>
+              </Grid>
             ) : (
               <></>
             )}
