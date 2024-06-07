@@ -75,8 +75,9 @@ export default function ResultPage() {
           )}
 
           <Typography variant="h2" sx={{ fontWeight: 400 }}>
-            {isRally ? `Stage ${event_result_number.toString().padStart(2, "0")}.` : ""} {circuit.name}{" "}
-            {circuit.length ? `(${convertLengthToKM(circuit.length)}km)` : ""}
+            {isRally ? `Stage ${event_result_number.toString().padStart(2, "0")} -` : ""} {circuit.name}
+            {" - "}
+            {circuit.length ? `${convertLengthToKM(circuit.length)}km` : ""}
           </Typography>
         </Box>
 
