@@ -55,6 +55,7 @@ export default function Home() {
                 <StyledTableRow>
                   <TableCell>Event Date</TableCell>
                   <TableCell>Event Name</TableCell>
+                  <TableCell>Winner</TableCell>
                   <TableCell></TableCell>
                 </StyledTableRow>
               </TableHead>
@@ -70,6 +71,12 @@ export default function Home() {
                     <TableCell sx={{ fontWeight: 700 }}>
                       {event.country && <TextWithNationalityFlagSuffix nationality={event.country} text={event.name} />}
                       {!event.country && <>{event.name}</>}
+                    </TableCell>
+                    <TableCell>
+                      <TextWithNationalityFlagSuffix
+                        nationality={event.winner?.nationality ?? ""}
+                        text={event.winner?.name ?? ""}
+                      />
                     </TableCell>
                     <TableCell sx={{ textAlign: "right" }}>
                       {event.has_itinerary ? (

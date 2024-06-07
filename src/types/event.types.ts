@@ -1,4 +1,5 @@
 import { Circuit } from "./circuit.types";
+import { Driver } from "./driver.types";
 import {
   AggregatedResultEntry,
   Result,
@@ -18,6 +19,7 @@ export type Event = {
 
 export type EventOverview = Event & {
   has_itinerary: boolean;
+  winner?: Driver;
 } & Event;
 
 export type EventAggregatedResults = {
