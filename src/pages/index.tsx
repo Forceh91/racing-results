@@ -11,6 +11,7 @@ import { TextWithNationalityFlagSuffix } from "components/ui";
 import { format, parseISO } from "date-fns";
 import { useEventsOverviewQuery } from "hooks/useEventsOverview";
 import Link from "next/link";
+import MuiLink from "@mui/material/Link";
 import { DEFAULT_DATE_FORMAT } from "../consts";
 import StyledTableRow, { sxBoldTableHeaders } from "../lib/table";
 
@@ -54,6 +55,7 @@ export default function Home() {
                 <StyledTableRow>
                   <TableCell>Event Date</TableCell>
                   <TableCell>Event Name</TableCell>
+                  <TableCell>Winner</TableCell>
                   <TableCell></TableCell>
                 </StyledTableRow>
               </TableHead>
@@ -70,8 +72,20 @@ export default function Home() {
                       {event.country && <TextWithNationalityFlagSuffix nationality={event.country} text={event.name} />}
                       {!event.country && <>{event.name}</>}
                     </TableCell>
+                    <TableCell>
+                      <TextWithNationalityFlagSuffix
+                        nationality={event.winner?.nationality ?? ""}
+                        text={event.winner?.name ?? ""}
+                      />
+                    </TableCell>
                     <TableCell sx={{ textAlign: "right" }}>
-                      {event.has_itinerary ? <Link href={`/events/${event.uuid}/`}>View Event</Link> : <></>}
+                      {event.has_itinerary ? (
+                        <MuiLink component={Link} href={`/events/${event.uuid}/`}>
+                          View Event
+                        </MuiLink>
+                      ) : (
+                        <></>
+                      )}
                     </TableCell>
                   </StyledTableRow>
                 ))}
