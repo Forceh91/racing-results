@@ -45,3 +45,25 @@ export const convertMillisecondsToMinSecString = (ms: number) => {
 
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 };
+
+export const DURATION_STRING_REGEX = /^((\d+):)?([0-5][0-9]):([0-5][0-9])\.([0-9][0-9][0-9])$/;
+
+export const convertDurationStringToMilliseconds = (string: string) => {
+  if (!string || !string.length) return 0;
+
+  const regexMatch = string.match(DURATION_STRING_REGEX);
+  if (!regexMatch) return 0;
+
+  const [match, hoursWithSymbol, hours, minutes, seconds, milliseconds] = regexMatch;
+  const hoursNumber = Number(hours);
+  const minutesNumber = Number(minutes);
+  const secondsNumber = Number(seconds);
+  const millisecondsNumber = Number(milliseconds);
+
+  const hoursToSeconds = !isNaN(hoursNumber) ? hoursNumber * 3600 : 0;
+  const minutesToSeconds = !isNaN(minutesNumber) ? minutesNumber * 60 : 0;
+  const verifiedSeconds = !isNaN(secondsNumber) ? secondsNumber : 0;
+  const verifiedMilliseconds = !isNaN(millisecondsNumber) ? millisecondsNumber : 0;
+
+  return (hoursToSeconds + minutesToSeconds + verifiedSeconds) * 1000 + verifiedMilliseconds;
+};

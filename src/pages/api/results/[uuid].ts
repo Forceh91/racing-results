@@ -6,6 +6,7 @@ import {
   DRIVER_PRISMA_SELECTOR,
   TEAM_PRISMA_SELECTOR,
   EVENT_ITINERARY_LIGHT_PRISMA_SELECTOR,
+  CAR_PRISMA_SELECTOR,
 } from "consts";
 
 const eventResultUUIDRoute = async (req: NextApiRequest, resp: NextApiResponse) => {
@@ -42,7 +43,7 @@ export const getResult = async (uuid: string) => {
           uuid: true,
           driver: { select: DRIVER_PRISMA_SELECTOR },
           team: { select: TEAM_PRISMA_SELECTOR },
-          car: true,
+          car: { select: CAR_PRISMA_SELECTOR },
           finished: true,
           grid: true,
           laps: true,

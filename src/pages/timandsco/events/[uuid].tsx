@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { LoadingBar, ErrorBar } from "components/alerts";
+import { TIMSCOStageResultForm } from "components/timandsco";
 import { TextWithNationalityFlagSuffix } from "components/ui";
 import { useEventQuery } from "hooks";
 import { sortAggregatedResults } from "lib/results";
@@ -28,13 +29,20 @@ const TimScoEvents = () => {
               <TextWithNationalityFlagSuffix nationality={event.country ?? ""} text={event.name} />
             </Typography>
 
-            {sortedAggregateResults && (
+            {event.itinerary.length > 0 &&
+              event.itinerary
+                .slice(0, 1)
+                .map((itineraryEntry) => (
+                  <TIMSCOStageResultForm stageUUID={itineraryEntry.uuid} key={itineraryEntry.uuid} />
+                ))}
+
+            {/* {sortedAggregateResults && (
               <>
                 <Stack spacing={1}>
                   <Typography variant="h2">Overall Results (After Stage {event.last_event_result_number})</Typography>
                 </Stack>
               </>
-            )}
+            )} */}
           </Stack>
         </Grid>
       )}

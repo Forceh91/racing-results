@@ -41,13 +41,12 @@ export type ResultFastestLap = {
 };
 
 export type ResultEntry = {
-  driver_uuid: string;
   driver: Driver;
   driver_number?: number;
   laps?: number;
   finished: boolean;
   time: number; // milliseconds
-  car?: Car;
+  car: Car;
   team?: Team;
   fastest_lap?: ResultFastestLap;
   grid?: number;

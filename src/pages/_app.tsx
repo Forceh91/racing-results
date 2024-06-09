@@ -1,12 +1,13 @@
-import type { AppProps } from "next/app";
-import Head from "next/head";
 import { CssBaseline, ThemeProvider, createTheme, useMediaQuery } from "@mui/material";
 import Container from "@mui/material/Container";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { theme } from "lib/theme";
-import "../styles/reset.scss";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Topbar } from "components/layout";
+import { theme } from "lib/theme";
+import type { AppProps } from "next/app";
+import Head from "next/head";
 import { useMemo } from "react";
+import "../styles/reset.scss";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </Container>
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
