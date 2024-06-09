@@ -129,6 +129,9 @@ model ResultEntry {
   // what team they were with
   team_uuid         String?
   team              Team?        @relation(fields: [team_uuid], references: [uuid])
+
+  // result entry must be unique to driver + stage
+  @@unique([driver_uuid, event_result_uuid], name: "resultEntryIdentifier")
 }
 
 // used more for a rally than a normal racing event - sum of all times up to that event_result_num
