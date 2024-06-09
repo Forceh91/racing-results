@@ -160,6 +160,9 @@ model AggreatedResultEntry {
   // have they retired? :(
   retired        Boolean?
   retired_reason String?
+
+  // aggregate result entry must be unique to driver + event + event_result_number
+  @@unique([driver_uuid, event_uuid, event_result_number], name: "aggregateResultEntryIdentifier")
 }
 
 enum EventType {
