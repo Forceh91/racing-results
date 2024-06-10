@@ -50,8 +50,6 @@ const post = async (req: NextApiRequest, resp: NextApiResponse) => {
     orderBy: [{ driver_uuid: "asc" }, { event_result: { event_result_number: "asc" } }],
   });
 
-  console.log("all results", allResultsForEvent);
-
   // figure out everyones aggregates
   const aggregateTimesPerDriver = allResultsForEvent.reduce((acc, result) => {
     if (!acc[result.driver_uuid]) {
