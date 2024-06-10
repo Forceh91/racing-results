@@ -31,7 +31,7 @@ const TimScoEvents = () => {
 
             {event.itinerary.length > 0 &&
               event.itinerary
-                .slice(1, 2)
+                .slice(0, 1)
                 .map((itineraryEntry) => (
                   <TIMSCOStageResultForm stageUUID={itineraryEntry.uuid} key={itineraryEntry.uuid} />
                 ))}

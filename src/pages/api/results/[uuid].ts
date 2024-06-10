@@ -67,7 +67,7 @@ export const getResult = async (uuid: string) => {
     where: {
       event_uuid: event.uuid,
       event_result_number: result.event_result_number,
-      retired: { not: true },
+      retired: null,
     },
     select: {
       id: false,

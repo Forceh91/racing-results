@@ -77,7 +77,7 @@ const post = async (req: NextApiRequest, resp: NextApiResponse) => {
       const driverResult = results.find((result) => result.driverUUID === driverUUID);
       if (!driverResult) continue;
 
-      // TODO: fix the retired state somehow.
+      // update aggregate results
       await prisma.aggreatedResultEntry.upsert({
         create: {
           driver_uuid: driverUUID,
@@ -85,9 +85,9 @@ const post = async (req: NextApiRequest, resp: NextApiResponse) => {
           time: time,
           event_uuid: eventUUID,
           car_uuid: driverResult.carUUID,
-          retired: !driverResult.finished,
+          retired: time ? null : true,
         },
-        update: { time: time, car_uuid: driverResult.carUUID, retired: !driverResult.finished },
+        update: { time: time, car_uuid: driverResult.carUUID, retired: time ? null : true },
         where: {
           aggregateResultEntryIdentifier: {
             driver_uuid: driverUUID,
@@ -97,6 +97,13 @@ const post = async (req: NextApiRequest, resp: NextApiResponse) => {
         },
       });
     }
+
+    // if they have a stage where they retired (time: 0), then delete the rest after that
+    const retirementIx = aggregateTimes.indexOf(0);
+    if (retirementIx !== -1)
+      await prisma.aggreatedResultEntry.deleteMany({
+        where: { driver_uuid: driverUUID, event_uuid: eventUUID, event_result_number: { gt: retirementIx + 1 } },
+      });
   }
 
   // TODO: remove anyone that wasnt in this list
