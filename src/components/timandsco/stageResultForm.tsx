@@ -13,6 +13,7 @@ import { TIMSCOStageResults, stageResultsSchema } from "schemas";
 import { formatRaceTime } from "lib/time";
 import { useMutation } from "@tanstack/react-query";
 import axios from "lib/axios";
+import { IconButton } from "@mui/material";
 
 type Props = {
   stageUUID: string;
@@ -98,10 +99,13 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
                       label="Stage Time"
                       inputProps={{ pattern: "^((d+):)?([0-5][0-9]):([0-5][0-9]).([0-9][0-9][0-9])$" }}
                     />
+                    <Button variant="text" color="error" onClick={() => remove(index)} title="Delete Entry">
+                      <Typography>X</Typography>
+                    </Button>
                   </Stack>
                 ))}
 
-                <Button type="button" variant="contained" onClick={addNewEntry} sx={{ mr: 2 }}>
+                <Button type="button" variant="contained" onClick={addNewEntry} sx={{ mr: 2 }} size="small">
                   <Typography>Add new entry</Typography>
                 </Button>
 
