@@ -1,19 +1,21 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useMutation } from "@tanstack/react-query";
 import { useEventResultQuery } from "hooks";
+import axios from "lib/axios";
+import { formatRaceTime } from "lib/time";
 import { useEffect } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { TIMSCOStageResults, stageResultsSchema } from "schemas";
-import { formatRaceTime } from "lib/time";
-import { useMutation } from "@tanstack/react-query";
-import axios from "lib/axios";
-import { IconButton } from "@mui/material";
+import { DriverAutoComplete } from "./driverAutocomplete";
+import { Autocomplete } from "@mui/material";
+import { DevTool } from "@hookform/devtools";
 
 type Props = {
   stageUUID: string;
@@ -74,7 +76,12 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
               <form onSubmit={onSubmit}>
                 {fields.map((item, index) => (
                   <Stack direction="row" spacing={2} mb={2} key={item.id}>
-                    <TextField {...register(`results.${index}.driverUUID` as const)} required label="Driver" />
+                    <DriverAutoComplete
+                      driver={results.results.find((entry) => entry.driver.uuid === item.driverUUID)?.driver}
+                      control={control}
+                      name={`results.${index}.driverUUID` as const}
+                    />
+
                     <TextField {...register(`results.${index}.teamUUID` as const)} label="Team" />
                     <TextField {...register(`results.${index}.carUUID` as const)} required label="Car" />
                     <Controller
@@ -112,6 +119,8 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
                 <Button type="submit" variant="contained" color="success">
                   <Typography>Save</Typography>
                 </Button>
+
+                <DevTool control={control} />
               </form>
             </Stack>
           </Stack>
