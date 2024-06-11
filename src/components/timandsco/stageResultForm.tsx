@@ -16,6 +16,7 @@ import { TIMSCOStageResults, stageResultsSchema } from "schemas";
 import { DriverAutoComplete } from "./driverAutocomplete";
 import { Autocomplete } from "@mui/material";
 import { DevTool } from "@hookform/devtools";
+import { CarAutoComplete } from "./carAutocomplete";
 
 type Props = {
   stageUUID: string;
@@ -83,7 +84,13 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
                     />
 
                     <TextField {...register(`results.${index}.teamUUID` as const)} label="Team" />
-                    <TextField {...register(`results.${index}.carUUID` as const)} required label="Car" />
+
+                    <CarAutoComplete
+                      car={results.results.find((entry) => entry.car.uuid === item.carUUID)?.car}
+                      control={control}
+                      name={`results.${index}.carUUID` as const}
+                    />
+
                     <Controller
                       name={`results.${index}.finished` as const}
                       control={control}
