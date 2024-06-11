@@ -42,75 +42,113 @@ const post = async (req: NextApiRequest, resp: NextApiResponse) => {
     });
   }
 
+  // remove anyone that wasnt in this list
+  await prisma.resultEntry.deleteMany({
+    where: {
+      event_result_uuid: stageUUID,
+      driver_uuid: { notIn: results.map((result) => result.driverUUID) },
+    },
+  });
+
   // now calculate aggregate results, this has to update all entries for all drivers on this event
   // first fetch all results for all drivers for this event
   const eventUUID = req.query.uuid;
   const allResultsForEvent = await prisma.resultEntry.findMany({
-    where: { event_result: { event_uuid: eventUUID }, AND: { driver_uuid: { in: driverUUIDs } } },
+    include: { event_result: true },
+    where: { event_result: { event_uuid: eventUUID } },
     orderBy: [{ driver_uuid: "asc" }, { event_result: { event_result_number: "asc" } }],
   });
 
   // figure out everyones aggregates
   const aggregateTimesPerDriver = allResultsForEvent.reduce((acc, result) => {
+    // if the result doesn't have an eventresult entry (impossible?) then skip
+    if (!result.event_result) return acc;
+
+    // when we don't have an entry for this driver, create one
     if (!acc[result.driver_uuid]) {
-      acc[result.driver_uuid] = [result.time];
+      acc[result.driver_uuid] = [{ time: result.time, event_result_number: result.event_result.event_result_number }];
     } else {
-      const prevTime = acc[result.driver_uuid][acc[result.driver_uuid].length - 1];
-      if (result.finished) acc[result.driver_uuid].push(prevTime + result.time);
-      else acc[result.driver_uuid].push(0);
+      // otherwise find the previous entry for this driver
+      const previousAggregate = acc[result.driver_uuid][acc[result.driver_uuid].length - 1];
+
+      // make sure that the didn't miss an event_result
+      if (previousAggregate.event_result_number === result.event_result.event_result_number - 1) {
+        // if they didn't finish in the previous event_result, skip this
+        if (!previousAggregate.time) return acc;
+
+        // if they finished then add it up, otherwise put them as 0
+        if (result.finished) {
+          acc[result.driver_uuid].push({
+            time: previousAggregate.time + result.time,
+            event_result_number: result.event_result.event_result_number,
+          });
+        } else acc[result.driver_uuid].push({ time: 0, event_result_number: result.event_result.event_result_number });
+      }
     }
     return acc;
-  }, {});
+  }, {} as { [driverUUID: string]: { time: number; event_result_number: number }[] });
 
   // can't await inside a forEach
   const aggregateTimesPerDriverUUID = Object.keys(aggregateTimesPerDriver);
   for (let j = 0; j < aggregateTimesPerDriverUUID.length; j++) {
     const driverUUID = aggregateTimesPerDriverUUID[j];
-    const aggregateTimes = aggregateTimesPerDriver[driverUUID] as number[];
+    const aggregateTimes = aggregateTimesPerDriver[driverUUID];
     if (!aggregateTimes) continue;
 
     // now add them all into db doing an upsert
     for (let k = 0; k < aggregateTimes.length; k++) {
       const time = aggregateTimes[k];
-      const driverResult = results.find((result) => result.driverUUID === driverUUID);
+      const driverResult = allResultsForEvent.find(
+        (result) =>
+          result.driver_uuid === driverUUID && result.event_result?.event_result_number === time.event_result_number
+      );
       if (!driverResult) continue;
 
       // update aggregate results
       await prisma.aggreatedResultEntry.upsert({
         create: {
           driver_uuid: driverUUID,
-          event_result_number: k + 1,
-          time: time,
+          event_result_number: time.event_result_number,
+          time: time.time,
           event_uuid: eventUUID,
-          car_uuid: driverResult.carUUID,
-          retired: time ? null : true,
+          car_uuid: driverResult.car_uuid,
+          retired: time.time ? null : true,
         },
-        update: { time: time, car_uuid: driverResult.carUUID, retired: time ? null : true },
+        update: { time: time.time, car_uuid: driverResult.car_uuid, retired: time.time ? null : true },
         where: {
           aggregateResultEntryIdentifier: {
             driver_uuid: driverUUID,
             event_uuid: eventUUID,
-            event_result_number: k + 1,
+            event_result_number: time.event_result_number,
           },
         },
       });
     }
 
-    // if they have a stage where they retired (time: 0), then delete the rest after that
-    const retirementIx = aggregateTimes.indexOf(0);
-    if (retirementIx !== -1)
-      await prisma.aggreatedResultEntry.deleteMany({
-        where: { driver_uuid: driverUUID, event_uuid: eventUUID, event_result_number: { gt: retirementIx + 1 } },
-      });
-  }
+    // if they have a stage where they retired (time: 0) or there's a gap, delete the rest
+    let ern = 0;
+    await prisma.aggreatedResultEntry.deleteMany({
+      where: {
+        driver_uuid: driverUUID,
+        event_uuid: eventUUID,
+        event_result_number: {
+          notIn: aggregateTimes
+            .filter((time, ix) => {
+              // remove any retirements
+              if (!time.time) return false;
 
-  // TODO: remove anyone that wasnt in this list
-  // await prisma.resultEntry.deleteMany({
-  //   where: {
-  //     event_result_uuid: stageUUID,
-  //     AND: { driver_uuid: { notIn: results.map((result) => result.driverUUID) } },
-  //   },
-  // });
+              // remove if theres a gap in event_result_number
+              // otherwise increase it and move on
+              if (time.event_result_number - 1 !== ern) return false;
+              else ern++;
+
+              return true;
+            })
+            .map((time) => time.event_result_number),
+        },
+      },
+    });
+  }
 
   resp.status(200).end();
 };
