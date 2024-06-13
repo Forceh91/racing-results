@@ -15,7 +15,6 @@ const post = async (req: NextApiRequest, resp: NextApiResponse) => {
 
   // upsert into the event results table for this event+stage
   const { stageUUID, results } = body.data;
-  const driverUUIDs = results.map((result) => result.driverUUID);
 
   // can't await inside a forEach
   for (let i = 0; i < results.length; i++) {

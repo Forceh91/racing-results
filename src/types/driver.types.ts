@@ -7,6 +7,7 @@ export type Driver = {
 
 export type Drivers = Driver[];
 
+export type DriverSearchItem = { uuid: string; name: string } & { inputValue?: string };
 export type DriverSearch = {
-  drivers: Drivers;
+  drivers: DriverSearchItem[];
 };
