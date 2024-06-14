@@ -1,14 +1,14 @@
-import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import { Box } from "@mui/material";
+import { createFilterOptions } from "@mui/material/Autocomplete";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { DRIVER_MIN_SEARCH_LENGTH } from "consts";
 import { useDriversSearchQuery } from "hooks/useDrivers";
-import { Box, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
+import axios from "lib/axios";
+import queryKeys from "queryKeys";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Driver, DriverSearch, DriverSearchItem } from "types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "lib/axios";
-import { DRIVER_MIN_SEARCH_LENGTH } from "consts";
-import queryKeys from "queryKeys";
+import { AutoCompleteWithAdd } from "./autocompletewithadd";
 
 type Props = { driver?: Driver; control: any; name: string };
 
@@ -38,7 +38,7 @@ export const DriverAutoComplete = ({ driver, control, name }: Props) => {
     <Box sx={{ width: 250 }}>
       <Controller
         render={({ field: { value, onChange, ref } }) => (
-          <Autocomplete
+          <AutoCompleteWithAdd
             options={
               searchQuery?.length >= DRIVER_MIN_SEARCH_LENGTH && !!results?.drivers?.length ? results.drivers : [driver]
             }
@@ -54,25 +54,6 @@ export const DriverAutoComplete = ({ driver, control, name }: Props) => {
               return option.name;
             }}
             renderOption={(props, option) => <li {...props}>{option?.name ?? ""}</li>}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Driver"
-                InputProps={{
-                  ...params.InputProps,
-                  type: "search",
-                  endAdornment: (
-                    <>
-                      {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                      {params.InputProps.endAdornment}
-                    </>
-                  ),
-                }}
-                ref={ref}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                required
-              />
-            )}
             onChange={async (e, value) => {
               if (!value || typeof value === "string") onChange(value ?? "");
               else {
@@ -90,9 +71,11 @@ export const DriverAutoComplete = ({ driver, control, name }: Props) => {
 
               return filtered;
             }}
-            loading={isLoading}
+            textFieldOnChange={(e) => setSearchQuery(e.target.value)}
+            isLoading={isLoading}
             defaultValue={{ uuid: driver?.uuid ?? "", name: driver?.name ?? "" }}
-            freeSolo
+            label="Driver"
+            ref={ref}
           />
         )}
         name={name}
