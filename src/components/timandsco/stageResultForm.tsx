@@ -1,3 +1,4 @@
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -6,23 +7,24 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { LoadingBar } from "components/alerts";
 import { useEventResultQuery } from "hooks";
 import axios from "lib/axios";
 import { formatRaceTime } from "lib/time";
+import queryKeys from "queryKeys";
 import { useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { TIMSCOStageResults, stageResultsSchema } from "schemas";
-import { DriverAutoComplete } from "./driverAutocomplete";
-import { Autocomplete } from "@mui/material";
-import { DevTool } from "@hookform/devtools";
 import { CarAutoComplete } from "./carAutocomplete";
+import { DriverAutoComplete } from "./driverAutocomplete";
 
 type Props = {
   stageUUID: string;
 };
 
 export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
+  const queryClient = useQueryClient();
   const { data: results, ...stageResultsQuery } = useEventResultQuery(stageUUID);
 
   const {
@@ -42,10 +44,13 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
     name: "results", // unique name for your Field Array
   });
 
+  const watch = useWatch({ control });
+
   const onSubmit = handleSubmit((data) => mutation.mutate(data));
   const mutation = useMutation({
     mutationFn: (payload: TIMSCOStageResults) =>
       axios.post<TIMSCOStageResults>(`/timandsco/events/${results?.event.uuid}/results`, payload),
+    onSuccess: () => queryClient.invalidateQueries({ ...queryKeys.events.results(stageUUID) }),
   });
 
   // once the results are loaded we can put them into the form
@@ -69,6 +74,8 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
   return (
     <Grid container>
       <Grid item xs={12}>
+        <LoadingBar shouldShow={stageResultsQuery.isLoading} text={"Fetching stage results..."} />
+
         {results && (
           <Stack spacing={2} mb={2}>
             <Typography variant="h3">Stage {results.event_result_number} Results</Typography>
@@ -83,7 +90,7 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
                       name={`results.${index}.driverUUID` as const}
                     />
 
-                    <TextField {...register(`results.${index}.teamUUID` as const)} label="Team" />
+                    {/* <TextField {...register(`results.${index}.teamUUID` as const)} label="Team" /> */}
 
                     <CarAutoComplete
                       car={results.results.find((entry) => entry.car.uuid === item.carUUID)?.car}
@@ -100,19 +107,28 @@ export const TIMSCOStageResultForm = ({ stageUUID }: Props) => {
                             <Checkbox
                               sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
                               checked={value}
-                              onChange={onChange}
+                              onChange={(e, checked) => {
+                                if (!checked) setValue(`results.${index}.time`, "");
+                                onChange(e, checked);
+                              }}
                             />
                           }
                           label="Finished?"
                         />
                       )}
                     />
-                    <TextField
-                      {...register(`results.${index}.time` as const)}
-                      required
-                      label="Stage Time"
-                      inputProps={{ pattern: "^((d+):)?([0-5][0-9]):([0-5][0-9]).([0-9][0-9][0-9])$" }}
-                    />
+                    {watch.results?.[index].finished && (
+                      <TextField
+                        {...register(`results.${index}.time` as const)}
+                        required={watch.results[index].finished}
+                        label="Stage Time"
+                        inputProps={{
+                          pattern: watch.results[index].finished
+                            ? "^((d+):)?([0-5][0-9]):([0-5][0-9]).([0-9][0-9][0-9])$"
+                            : "",
+                        }}
+                      />
+                    )}
                     <Button variant="text" color="error" onClick={() => remove(index)} title="Delete Entry">
                       <Typography>X</Typography>
                     </Button>

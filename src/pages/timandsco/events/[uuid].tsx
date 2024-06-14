@@ -1,17 +1,23 @@
-import { Stack, Typography } from "@mui/material";
+import { MenuItem, Select, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { LoadingBar, ErrorBar } from "components/alerts";
+import { ErrorBar, LoadingBar } from "components/alerts";
 import { TIMSCOStageResultForm } from "components/timandsco";
 import { TextWithNationalityFlagSuffix } from "components/ui";
 import { useEventQuery } from "hooks";
 import { sortAggregatedResults } from "lib/results";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const TimScoEvents = () => {
   const router = useRouter();
   const { data: event, ...eventQuery } = useEventQuery(router.query.uuid as string);
+  const [selectedStageUUID, setSelectedStageUUID] = useState("");
 
   const sortedAggregateResults = event?.aggregated_results.length && sortAggregatedResults(event.aggregated_results);
+
+  useEffect(() => {
+    if (eventQuery.isSuccess && event && event.itinerary.length) setSelectedStageUUID(event.itinerary[0].uuid);
+  }, [eventQuery.isSuccess, event]);
 
   return (
     <Grid container rowSpacing={3}>
@@ -29,12 +35,18 @@ const TimScoEvents = () => {
               <TextWithNationalityFlagSuffix nationality={event.country ?? ""} text={event.name} />
             </Typography>
 
-            {event.itinerary.length > 0 &&
-              event.itinerary
-                .slice(0, 1)
-                .map((itineraryEntry) => (
-                  <TIMSCOStageResultForm stageUUID={itineraryEntry.uuid} key={itineraryEntry.uuid} />
+            <Select value={selectedStageUUID} onChange={(e) => setSelectedStageUUID(e.target.value)}>
+              {event.itinerary.length > 0 &&
+                event.itinerary.map((itineraryEntry) => (
+                  <MenuItem key={itineraryEntry.uuid} value={itineraryEntry.uuid}>
+                    Stage {itineraryEntry.event_result_number}
+                  </MenuItem>
                 ))}
+            </Select>
+
+            {!!selectedStageUUID.length && (
+              <TIMSCOStageResultForm key={selectedStageUUID} stageUUID={selectedStageUUID} />
+            )}
 
             {/* {sortedAggregateResults && (
               <>
